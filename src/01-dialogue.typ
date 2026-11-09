@@ -12,7 +12,7 @@
 #let S = say.with([学生])
 #let P = say.with([教授])
 
-#P[欢迎来读这本书！它叫 #strong[Operating Systems in Three Easy Pieces]（操作系统：三个简单的部分），我在这里教你关于操作系统需要知道的东西。我叫“教授”；你是谁？]
+#P[欢迎来读这本书！它叫 #strong[Operating Systems in Three Easy Pieces]（操作系统：三个简单的部分），我在这儿教你操作系统方面该懂的东西。我叫“教授”；你是谁？]
 
 #S[您好，教授！您大概也猜到了，我叫“学生”。我已经准备好学习了！]
 
