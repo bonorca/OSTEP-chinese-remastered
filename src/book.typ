@@ -3,6 +3,7 @@
 #import "ostep.typ": *
 #set document(title: "操作系统导论（Operating Systems: Three Easy Pieces）中文版", author: ("Remzi H. Arpaci-Dusseau", "Andrea C. Arpaci-Dusseau"))
 
+#include "cover.typ"
 #include "00-dedication.typ"
 #page(width: 432pt, height: 648pt, background: none, foreground: none)[]  // 献词背面的空白页（ii）
 #include "00-preface.typ"
