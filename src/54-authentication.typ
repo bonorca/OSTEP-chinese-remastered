@@ -5,7 +5,7 @@
 // 否则 set page 会出现在章首块之后，引起分页。
 #show: it => {
   set page(foreground: context {
-    if here().page() > 1 {
+    if local-page() > 1 {
       set text(font: serif, size: 8pt, top-edge: "baseline", bottom-edge: "baseline")
       place(top + left, dx: margin-x, dy: foot-y - 9pt, rect(width: text-width, height: 15pt, fill: white, stroke: none))
       place(top + left, dx: margin-x, dy: foot-y, box(width: text-width, fsc("Operating Systems [Version 1.10]")))

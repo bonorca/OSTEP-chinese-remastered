@@ -11,16 +11,16 @@
 // 条目数据在文件末尾，由脚本按原书目录逐条匹配各章 .typ 里已定的标题生成。
 
 #let first-page = 13
-#let roman() = numbering("i", here().page() + first-page - 1)
+#let roman() = numbering("i", if book-mode { counter(page).get().first() } else { here().page() + first-page - 1 })
 
-#set document(title: "目录")
+#set document(title: "目录") if not book-mode
 #set page(
   width: 432pt, height: 648pt,
   margin: (x: margin-x, top: body-top, bottom: 648pt - body-bottom),
   background: context {
     set text(font: serif, size: body-size, top-edge: "baseline", bottom-edge: "baseline")
     let at(y, body) = place(top + left, dx: margin-x, dy: y, box(width: text-width, body))
-    if here().page() == 1 {
+    if local-page() == 1 {
       at(foot-y, align(center, roman()))
     } else {
       at(head-y, [目录 #h(1fr) #roman()])
@@ -524,4 +524,41 @@
 )
 
 #v(4pt)
-#for it in toc-items { entry(it) }
+#unit-start()
+#if not book-mode {
+  for it in toc-items { entry(it) }
+} else {
+  // 整本模式：不用上面的静态条目，直接从全书的章锚点、分部锚点和节标题生成，带页码，点了能跳
+  // （这样也收进了原书 v1.10 目录没有的第四部分和附录）
+  place(hide(heading(level: 1)[目录]))
+  context {
+    let plain(c) = if type(c) == str { c } else if c.has("text") { c.text } else if c.has("children") {
+      c.children.map(plain).join()
+    } else if c.has("body") { plain(c.body) } else if repr(c.func()) == "space" { " " } else { "" }
+    let ch1 = query(<ostep-chapter>).filter(m => m.value.no == "1")
+    let main = if ch1.len() > 0 { ch1.first().location().page() } else { 0 }
+    let pn(loc) = {
+      let n = counter(page).at(loc).first()
+      if loc.page() < main { numbering("i", n) } else { str(n) }
+    }
+    // 标题后面接引导点和页码，整行可以点
+    let row(loc, body) = link(loc, box(width: 100%)[#body #box(width: 1fr, repeat(h(3pt) + [.] + h(3pt))) #pn(loc)])
+    for m in query(selector(<ostep-chapter>).or(<ostep-part>).or(heading.where(level: 2))) {
+      let loc = m.location()
+      if m.func() == metadata and m.label == <ostep-part> {
+        block(above: 16pt, below: 8pt, sticky: true, text(size: 11pt, weight: "bold")[#m.value.no#h(1em)#m.value.title])
+      } else if m.func() == metadata {
+        block(above: 9pt, below: gap, sticky: true,
+          grid(columns: (ind, 1fr), link(loc, strong(m.value.no)), row(loc, strong(m.value.title))))
+      } else {
+        let t = plain(m.body).trim()
+        let mm = t.match(regex("^([A-Z]?\d*\.\d+)\s+(.+)$"))
+        if mm != none {
+          block(above: gap, below: gap, grid(columns: (ind, secw, 1fr), [], link(loc, mm.captures.at(0)), row(loc, mm.captures.at(1))))
+        } else {
+          block(above: gap, below: gap, grid(columns: (ind, 1fr), [], row(loc, t)))
+        }
+      }
+    }
+  }
+}

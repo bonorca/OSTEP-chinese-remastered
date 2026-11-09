@@ -4,7 +4,7 @@
 // 和第 53 章一样，用前景层盖住模板页脚再重画（章首页只有页码，不处理）。这条 show 规则必须放在 chapter 之前。
 #show: it => {
   set page(foreground: context {
-    if here().page() > 1 {
+    if local-page() > 1 {
       set text(font: serif, size: 8pt, top-edge: "baseline", bottom-edge: "baseline")
       place(top + left, dx: margin-x, dy: foot-y - 9pt, rect(width: text-width, height: 15pt, fill: white, stroke: none))
       place(top + left, dx: margin-x, dy: foot-y, box(width: text-width, fsc("Operating Systems [Version 1.10]")))

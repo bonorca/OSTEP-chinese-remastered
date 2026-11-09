@@ -9,18 +9,18 @@
 #let short = "关于并发的对话"
 #let years = "2008–25"
 
-#set document(title: "25 关于并发的对话")
+#set document(title: "25 关于并发的对话") if not book-mode
 #set page(
   width: 432pt, height: 648pt,
   margin: (x: margin-x, top: body-top, bottom: 648pt - body-bottom),
   background: context {
-    let p = here().page()
+    let p = local-page()
     set text(font: serif, size: body-size, top-edge: "baseline", bottom-edge: "baseline")
     let at(y, body) = place(top + left, dx: margin-x, dy: y, box(width: text-width, body))
     if p == 1 or p == 3 {
-      at(foot-y, align(center)[#p])
+      at(foot-y, align(center)[#page-no()])
     } else if p > 3 {
-      at(head-y, [#short #h(1fr) #p])
+      at(head-y, [#short #h(1fr) #page-no()])
       place(top + left, dx: margin-x, dy: head-y + 3.5pt, line(length: text-width, stroke: 0.4pt))
       at(foot-y, text(size: 8pt)[
         #fsc("Operating Systems [Version 1.10]") #h(1fr) #fsc("© " + years + ", Arpaci-Dusseau")])
@@ -44,6 +44,8 @@
 #show regex("[A-Za-z]’[A-Za-z]"): set text(font: "Palatino Linotype")
 #show smartquote.where(double: false): set text(font: "Palatino Linotype")
 
+#part-mark("第二部分", "并发")
+#chapter-mark(25, "关于并发的对话")
 // ---- 第 1 页：分部标题页（原书：“Part II” 14.3pt、“Concurrency” 17.2pt，都加粗、居中）----
 #block(height: 100%, width: 100%, {
   set text(top-edge: "baseline", bottom-edge: "baseline")

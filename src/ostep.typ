@@ -41,11 +41,46 @@
 
 // 图和表：同样做成浮动体，下面是“图 15.1：标题”（标题加粗）
 // at：浮动位置，默认 auto（页顶或页底），高的图在节末留白太多时可以传 top 强制浮到页顶
+// ---- 整本模式 ----
+// typst compile --input book=1 book.typ 时为真：全书合成一本，页码连续，每章是一个“单元”。
+// 单章编译时为假，一切照旧。
+#let book-mode = sys.inputs.at("book", default: "0") == "1"
+// 每个文件（单元）开头放一个锚点；整本模式下每章脚注重新从 1 编号
+#let unit-start() = [#metadata(none)<ostep-unit>] + if book-mode { counter(footnote).update(0) }
+#let unit-starts() = query(<ostep-unit>).map(m => m.location().page())
+// 本单元内的第几页（章首页是 1）；单章编译时就是物理页码。需要在 context 里调用
+#let local-page() = {
+  let p = here().page()
+  let s = unit-starts().filter(x => x <= p)
+  p - (if s.len() > 0 { calc.max(..s) } else { 1 }) + 1
+}
+// 页眉页脚上印的页码：整本模式用全书连续的页码计数器，单章就是物理页码
+// （第 1 章首页的页码计数器是在页面中间重置成 1 的，页脚读的是页顶的值，所以单独处理）
+#let page-no() = if book-mode {
+  let ch1 = query(<ostep-chapter>).filter(m => m.value.no == "1")
+  if ch1.len() > 0 and ch1.first().location().page() == here().page() { 1 } else { counter(page).get().first() }
+} else { here().page() }
+// loc 和当前位置是否在同一个单元（同一章）里
+#let same-unit(loc) = {
+  let s = unit-starts()
+  s.filter(x => x <= loc.page()).len() == s.filter(x => x <= here().page()).len()
+}
+// 章的锚点：目录、「第 N 章」链接、书签都靠它；整本模式下再放一个看不见的一级标题当书签
+#let chapter-mark(no, title) = {
+  unit-start()
+  [#metadata((no: str(no), title: title))<ostep-chapter>]
+  if book-mode { place(hide(heading(level: 1, outlined: true, bookmarked: true)[#str(no) #title])) }
+}
+#let part-mark(no, title) = [#metadata((no: no, title: title))<ostep-part>]
+
 // 跳转链接：图的锚点（正文里的「图 X.Y」点了跳过来）、参考文献条目的锚点（「[FLR98]」点了跳过来）
+// 先找本章里的；cross: true 时本章没有就到别的章找（图号全书唯一，文献键各章重复所以不跨章）
 #let figmark(num) = [#metadata(str(num))<ostep-fig>]
-#let reflink(kind, key, body) = context {
-  let hits = query(kind).filter(m => m.value == key)
-  if hits.len() > 0 { link(hits.first().location(), body) } else { body }
+#let reflink(kind, key, body, cross: false) = context {
+  let hits = query(kind).filter(m => m.value == key or (type(m.value) == dictionary and m.value.no == key))
+  let own = hits.filter(m => same-unit(m.location()))
+  let tgt = if own.len() > 0 { own.first() } else if cross and hits.len() > 0 { hits.first() } else { none }
+  if tgt != none { link(tgt.location(), body) } else { body }
 }
 #let bibkey = "[A-Z][A-Za-z+\-]*\d{2}[a-z]?"
 
@@ -60,8 +95,9 @@
 
 // 引用某个 tag 所在的页码。命令行核对页码用：typst eval 'query(<fig1>).first().location().page()' --in 某章.typ
 #let pageof(tag) = context {
-  let loc = locate(label(tag))
-  link(loc, str(loc.page()))
+  let hits = query(label(tag)).filter(m => same-unit(m.location()))
+  let loc = if hits.len() > 0 { hits.first().location() } else { locate(label(tag)) }
+  link(loc, str(counter(page).at(loc).first()))
 }
 
 // 带行号的代码清单（原书的代码图）：#fig("28.1", "标题", align(left, numbered("…")))
@@ -109,18 +145,18 @@
 
 // version：页脚的版本号，照原文页脚填（大多数章是 1.10，第 32 章是 1.20）
 #let chapter(number: none, title: none, short: none, years: "2008–25", version: "1.10", body) = {
-  set document(title: str(number) + " " + title)
+  set document(title: str(number) + " " + title) if not book-mode
   set page(
     width: 432pt, height: 648pt,
     margin: (x: margin-x, top: body-top, bottom: 648pt - body-bottom),
     background: context {
-      let p = here().page()
+      let p = local-page()
       set text(font: serif, size: body-size, top-edge: "baseline", bottom-edge: "baseline")
       let at(y, body) = place(top + left, dx: margin-x, dy: y, box(width: text-width, body))
       if p == 1 {
-        at(foot-y, align(center)[#p])
+        at(foot-y, align(center)[#page-no()])
       } else {
-        at(head-y, [#short #h(1fr) #p])
+        at(head-y, [#short #h(1fr) #page-no()])
         place(top + left, dx: margin-x, dy: head-y + 3.5pt, line(length: text-width, stroke: 0.4pt))
         at(foot-y, text(size: 8pt)[
           #fsc("Operating Systems [Version " + version + "]") #h(1fr) #fsc("© " + years + ", Arpaci-Dusseau")])
@@ -149,7 +185,7 @@
   show link: set text(fill: rgb("#1f4e8c"))
   show regex("图\s?(?:[A-Z]|\d+)\.\d+"): it => {
     let num = it.text.replace(regex("^图\s?"), "")
-    reflink(<ostep-fig>, num, it)
+    reflink(<ostep-fig>, num, it, cross: true)
   }
   show regex("\[" + bibkey + "(?:[,，;；]\s?" + bibkey + ")*\]"): it => {
     let s = it.text
@@ -171,9 +207,11 @@
   }
 
   show heading: set text(weight: "regular")
-  show heading.where(level: 1): it => block(above: 18pt, below: 10pt, sticky: true,
+  // 整本模式下章名占一级标题（书签用），节标题整体降一级
+  let L1 = if book-mode { 2 } else { 1 }
+  show heading.where(level: L1): it => block(above: 18pt, below: 10pt, sticky: true,
     move(dx: -21pt, text(size: 10.9pt, it.body)))
-  show heading.where(level: 2): it => block(above: 15pt, below: 8pt, sticky: true,
+  show heading.where(level: L1 + 1): it => block(above: 15pt, below: 8pt, sticky: true,
     text(size: 10pt, weight: "bold", it.body))
 
   set footnote.entry(separator: line(length: 30%, stroke: 0.4pt), gap: 3pt, clearance: 8pt)
@@ -184,6 +222,14 @@
   show enum: set par(first-line-indent: 0pt)
   set list(indent: 12pt, body-indent: 6pt, spacing: skip - 1em, marker: text(size: 0.6em, baseline: -0.2em)[●])
   show list: set par(first-line-indent: 0pt)
+
+  // 整本模式：「第 N 章」可以点，跳到那一章
+  show regex("第\s?(?:\d+|[A-H])\s?章"): it => if book-mode {
+    reflink(<ostep-chapter>, it.text.replace(regex("[第章\s]"), ""), it, cross: true)
+  } else { it }
+
+  chapter-mark(number, title)
+  if book-mode and str(number) == "1" { counter(page).update(1) }
 
   // 章首：右上角大号章号 + 折角线，下面是右对齐的章名
   block(height: 200pt - body-top - 0.88 * body-size, width: 100%, below: 0pt, {
@@ -196,6 +242,7 @@
       box(width: text-width, align(right, text(font: sans, size: 14.3pt, title))))
   })
 
+  set heading(offset: 1) if book-mode
   body
 }
 

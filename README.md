@@ -28,6 +28,8 @@
 ```
 以上只是一些小小的中文震撼，其实整本书都可以这么对比，我不知道作者的中文语法学自哪个星球，至少并非是我熟知的。
 
+**整本下载：[pdf/OSTEP-zh.pdf](pdf/OSTEP-zh.pdf)**（全书一本，页码连续，目录带页码，书签和跨章链接都能点）；各章单独的 PDF 见下表。
+
 <!-- progress:start -->
 
 ## 翻译进度
@@ -145,6 +147,7 @@ python tools/build.py                 # 编译全书，输出到 pdf/
 python tools/build.py 28 a4           # 只编译第 28 章和附录 a4
 python tools/build.py --part 2        # 只编译第二部分（0 简介 1 虚拟化 2 并发 3 持久性 4 安全 5 附录）
 python tools/build.py --watch 28      # 改稿时用：保存后自动重新编译
+python tools/build.py --book          # 把全书编成一本：pdf/OSTEP-zh.pdf
 python tools/build.py --list          # 列出所有章节
 ```
 

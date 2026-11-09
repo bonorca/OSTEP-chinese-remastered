@@ -5,6 +5,8 @@
 #   python tools/build.py --part 2        只编译第二部分（并发）；0 简介 1 虚拟化 2 并发 3 持久性 4 安全 5 附录
 #   python tools/build.py --watch 28      监视第 28 章，保存源文件后自动重新编译
 #   python tools/build.py --list          列出所有章节和它们的输出位置
+#   python tools/build.py --book          把全书编成一本：pdf/OSTEP-zh.pdf（页码连续、目录带页码、书签、跨章链接）
+#                                         可以和其他选项一起用，比如 --book 28 就是先编第 28 章再编整本
 #
 # 选项：-j N 同时编译 N 个文件（默认按 CPU 核数）；--out DIR 输出到别的目录（仍按部分分子目录）。
 # 需要 Typst 0.15 或更新版本：放在 PATH 里，或者用环境变量 TYPST 指定 typst 可执行文件的路径。
@@ -66,6 +68,7 @@ def main():
     ap.add_argument("--part", type=int, choices=range(6), help="只编译某一部分：0 简介 1 虚拟化 2 并发 3 持久性 4 安全 5 附录")
     ap.add_argument("--watch", metavar="章节", help="监视一个章节，保存后自动重新编译（Ctrl+C 退出）")
     ap.add_argument("--list", action="store_true", help="列出所有章节和输出位置")
+    ap.add_argument("--book", action="store_true", help="把全书编成一本 PDF（pdf/OSTEP-zh.pdf）")
     ap.add_argument("-j", "--jobs", type=int, default=os.cpu_count() or 4, help="同时编译的文件数")
     ap.add_argument("--out", default=os.path.join(ROOT, "pdf"), help="输出目录（默认 pdf/）")
     a = ap.parse_args()
@@ -98,11 +101,24 @@ def main():
             pass
         return
 
-    names = pick(a.names) if a.names else all_names
-    if a.part is not None:
-        names = [n for n in names if part_of(n) == a.part]
+    if a.book and not a.names and a.part is None:
+        names = []          # 只编整本
+    else:
+        names = pick(a.names) if a.names else all_names
+        if a.part is not None:
+            names = [n for n in names if part_of(n) == a.part]
 
     failed = []
+    if a.book:
+        dst = os.path.join(a.out, "OSTEP-zh.pdf")
+        os.makedirs(a.out, exist_ok=True)
+        r = subprocess.run([typst, "compile", "--root", SRC, "--input", "book=1", os.path.join(SRC, "book.typ"), dst],
+                           capture_output=True, text=True, encoding="utf-8")
+        if r.returncode:
+            failed.append("book")
+            print(f"✗ 整本\n{(r.stderr or '').strip()}\n")
+        else:
+            print(f"✓ 整本 -> {os.path.relpath(dst, ROOT)}")
     with ThreadPoolExecutor(max_workers=max(1, a.jobs)) as ex:
         for name, code, err in ex.map(lambda n: compile_one(typst, n, a.out), names):
             if code:
@@ -110,7 +126,8 @@ def main():
                 print(f"✗ {name}\n{err}\n")
             else:
                 print(f"✓ {name}")
-    print(f"\n完成 {len(names) - len(failed)}/{len(names)}" + (f"，失败：{' '.join(failed)}" if failed else ""))
+    total = len(names) + (1 if a.book else 0)
+    print(f"\n完成 {total - len(failed)}/{total}" + (f"，失败：{' '.join(failed)}" if failed else ""))
     sys.exit(1 if failed else 0)
 
 

@@ -5,14 +5,14 @@
 // 其余各页页眉左边是「前言」、右边是页码，页脚和正文各章一样。原文页脚是 VERSION 1.20、2008–26。
 #let roman() = numbering("i", counter(page).get().first())
 
-#set document(title: "前言")
+#set document(title: "前言") if not book-mode
 #set page(
   width: 432pt, height: 648pt,
   margin: (x: margin-x, top: body-top, bottom: 648pt - body-bottom),
   background: context {
     set text(font: serif, size: body-size, top-edge: "baseline", bottom-edge: "baseline")
     let at(y, body) = place(top + left, dx: margin-x, dy: y, box(width: text-width, body))
-    if here().page() == 1 {
+    if local-page() == 1 {
       at(foot-y, align(center)[iii])
     } else {
       at(head-y, [前言 #h(1fr) #roman()])
@@ -23,6 +23,8 @@
   },
 )
 #counter(page).update(3)
+#unit-start()
+#if book-mode { place(hide(heading(level: 1)[前言])) }
 
 #set text(font: serif, size: body-size, lang: "zh", region: "cn", top-edge: 0.88em, bottom-edge: -0.12em)
 #set par(justify: true, leading: skip - 1em, spacing: skip - 1em, first-line-indent: (amount: 2em, all: true))
