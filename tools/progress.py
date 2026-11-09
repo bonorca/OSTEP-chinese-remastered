@@ -6,7 +6,7 @@ STATUS = {
     "todo": ("⬜", "未开始"),
     "wip": ("🟨", "翻译中"),
     "translated": ("🟦", "已翻译，待校对"),
-    "proofread": ("🟩", "已校对（三轮）"),
+    "proofread": ("🟩", "已校对"),
 }
 START, END = "<!-- progress:start -->", "<!-- progress:end -->"
 

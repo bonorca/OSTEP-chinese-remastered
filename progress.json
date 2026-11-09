@@ -6,33 +6,36 @@
         {
           "no": "00",
           "file": "00-dedication",
-          "title": "dedication",
-          "status": "wip"
+          "title": "献词",
+          "status": "proofread",
+          "pdf": "pdf/0-简介/00-dedication-zh.pdf"
         },
         {
           "no": "00",
           "file": "00-preface",
-          "title": "preface",
-          "status": "wip"
+          "title": "前言",
+          "status": "proofread",
+          "pdf": "pdf/0-简介/00-preface-zh.pdf"
         },
         {
           "no": "00",
           "file": "00-toc",
-          "title": "toc",
-          "status": "todo"
+          "title": "目录",
+          "status": "proofread",
+          "pdf": "pdf/0-简介/00-toc-zh.pdf"
         },
         {
           "no": "01",
           "file": "01-dialogue",
           "title": "关于本书的对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/0-简介/01-dialogue-zh.pdf"
         },
         {
           "no": "02",
           "file": "02-introduction",
           "title": "操作系统简介",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/0-简介/02-introduction-zh.pdf"
         }
       ]
@@ -44,72 +47,77 @@
           "no": "03",
           "file": "03-dialogue",
           "title": "关于虚拟化的对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/1-虚拟化/03-dialogue-zh.pdf"
         },
         {
           "no": "04",
           "file": "04-processes",
           "title": "抽象：进程",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/1-虚拟化/04-processes-zh.pdf"
         },
         {
           "no": "05",
           "file": "05-process-api",
           "title": "process api",
-          "status": "wip"
+          "status": "proofread",
+          "pdf": "pdf/1-虚拟化/05-process-api-zh.pdf"
         },
         {
           "no": "06",
           "file": "06-direct-execution",
           "title": "direct execution",
-          "status": "wip"
+          "status": "proofread",
+          "pdf": "pdf/1-虚拟化/06-direct-execution-zh.pdf"
         },
         {
           "no": "07",
           "file": "07-cpu-scheduling",
           "title": "cpu scheduling",
-          "status": "wip"
+          "status": "proofread",
+          "pdf": "pdf/1-虚拟化/07-cpu-scheduling-zh.pdf"
         },
         {
           "no": "08",
           "file": "08-multi-level-feedback",
           "title": "multi level feedback",
-          "status": "wip"
+          "status": "proofread",
+          "pdf": "pdf/1-虚拟化/08-multi-level-feedback-zh.pdf"
         },
         {
           "no": "09",
           "file": "09-lottery-scheduling",
           "title": "lottery scheduling",
-          "status": "todo"
+          "status": "proofread",
+          "pdf": "pdf/1-虚拟化/09-lottery-scheduling-zh.pdf"
         },
         {
           "no": "10",
           "file": "10-multi-cpu-scheduling",
           "title": "多处理器调度（进阶）",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/1-虚拟化/10-multi-cpu-scheduling-zh.pdf"
         },
         {
           "no": "11",
           "file": "11-summary",
           "title": "关于 CPU 虚拟化的总结对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/1-虚拟化/11-summary-zh.pdf"
         },
         {
           "no": "12",
           "file": "12-dialogue",
           "title": "关于内存虚拟化的对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/1-虚拟化/12-dialogue-zh.pdf"
         },
         {
           "no": "13",
           "file": "13-address-spaces",
           "title": "抽象：地址空间",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/1-虚拟化/13-address-spaces-zh.pdf"
         },
         {
@@ -444,56 +452,56 @@
           "no": "A1",
           "file": "a1-dialogue",
           "title": "关于虚拟机监视器的对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a1-dialogue-zh.pdf"
         },
         {
           "no": "A2",
           "file": "a2-virtual-machines",
           "title": "虚拟机监视器",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a2-virtual-machines-zh.pdf"
         },
         {
           "no": "A3",
           "file": "a3-dialogue",
           "title": "关于管程的对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a3-dialogue-zh.pdf"
         },
         {
           "no": "A4",
           "file": "a4-monitors",
           "title": "管程（已过时）",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a4-monitors-zh.pdf"
         },
         {
           "no": "A5",
           "file": "a5-dialogue",
           "title": "关于实验的对话",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a5-dialogue-zh.pdf"
         },
         {
           "no": "A6",
           "file": "a6-lab-tutorial",
           "title": "实验：教程",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a6-lab-tutorial-zh.pdf"
         },
         {
           "no": "A7",
           "file": "a7-systems-labs",
           "title": "实验：系统项目",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a7-systems-labs-zh.pdf"
         },
         {
           "no": "A8",
           "file": "a8-xv6-labs",
           "title": "实验：xv6 项目",
-          "status": "translated",
+          "status": "proofread",
           "pdf": "pdf/5-附录/a8-xv6-labs-zh.pdf"
         }
       ]

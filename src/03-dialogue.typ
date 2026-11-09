@@ -31,7 +31,8 @@
 #set par(justify: true, leading: skip - 1em, spacing: skip - 1em, first-line-indent: (amount: 2em, all: true))
 #show strong: set text(weight: "bold")
 // 对话台词：原书是斜体，台词里的术语是粗斜体（同第 25 章）
-#let say(who, body) = block(above: 7pt, below: 7pt, par(first-line-indent: 0pt)[
+// 台词间距比第 25 章略紧（6pt），免得最后一句单独落到第 4 页
+#let say(who, body) = block(above: 6pt, below: 6pt, par(first-line-indent: 0pt)[
   #strong(who)：#{
     set text(font: kai, style: "italic", size: 1.05em)
     show strong: set text(font: ("Palatino Linotype", "Noto Serif SC"), size: 0.95em)
@@ -74,7 +75,7 @@
 
 #P[对，一个桃子。我们把它叫作#strong[物理]（physical）桃子。可是有很多人都想吃这个桃子。我们希望给每个吃桃子的人都端上一个他们自己的桃子，让大家都高兴。我们把给他们的桃子叫作#strong[虚拟]（virtual）桃子；我们设法用这一个物理桃子造出许多个虚拟桃子。重要的是：在这个假象里，每个吃桃子的人看上去都拥有一个物理桃子，但实际上并没有。]
 
-#S[所以你们在分着吃这个桃子，可自己却根本不知道？]
+#S[所以大家在分着吃这个桃子，自己却根本不知道？]
 
 #P[对！正是如此。]
 
@@ -88,7 +89,7 @@
 
 #S[听起来像个糟糕的竞选口号。您说的是计算机，对吧，教授？]
 
-#P[啊，年轻的蚱蜢，你想要一个更具体的例子。好主意！我们拿最基本的资源，也就是 CPU 来说。假设系统里有一个物理 CPU（虽然现在常常有两个、四个甚至更多）。虚拟化所做的，就是拿着这一个 CPU，让它在系统上运行的应用程序看来像是许多个虚拟 CPU。这样，虽然每个应用程序都以为自己有一个 CPU 可用，实际上却只有一个。于是操作系统营造出了一个美丽的假象：它把 CPU 虚拟化了。]
+#P[啊，小蚱蜢，你想要一个更具体的例子。好主意！我们拿最基本的资源，也就是 CPU 来说。假设系统里有一个物理 CPU（虽然现在常常有两个、四个甚至更多）。虚拟化所做的，就是拿着这一个 CPU，让系统上运行的应用程序觉得有许多个虚拟 CPU（virtual CPU）。这样，虽然每个应用程序都以为自己有一个 CPU 可用，实际上却只有一个。于是操作系统营造出了一个美丽的假象：它把 CPU 虚拟化了。]
 
 #S[哇！听起来像魔法一样。再多讲讲！这是怎么做到的？]
 
