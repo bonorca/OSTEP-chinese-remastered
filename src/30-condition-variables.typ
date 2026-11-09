@@ -9,6 +9,7 @@
 #let codefig(num, title, it, tag: none, at: auto) = fig(num, title, align(left, code(it)), tag: tag, at: at)
 // 不浮动、就地排的代码图（章首页用：浮动会把图推到页底，正文中间留出大片空白）
 #let codefig-here(num, title, it, tag: none) = block(width: 100%, above: 12pt, below: 12pt, {
+  figmark(num)
   if tag != none [#metadata(none)#label(tag)]
   set par(first-line-indent: 0pt, justify: false)
   align(center, align(left, code(it)))

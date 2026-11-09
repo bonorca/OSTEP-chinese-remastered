@@ -41,7 +41,16 @@
 
 // 图和表：同样做成浮动体，下面是“图 15.1：标题”（标题加粗）
 // at：浮动位置，默认 auto（页顶或页底），高的图在节末留白太多时可以传 top 强制浮到页顶
+// 跳转链接：图的锚点（正文里的「图 X.Y」点了跳过来）、参考文献条目的锚点（「[FLR98]」点了跳过来）
+#let figmark(num) = [#metadata(str(num))<ostep-fig>]
+#let reflink(kind, key, body) = context {
+  let hits = query(kind).filter(m => m.value == key)
+  if hits.len() > 0 { link(hits.first().location(), body) } else { body }
+}
+#let bibkey = "[A-Z][A-Za-z+\-]*\d{2}[a-z]?"
+
 #let fig(num, title, body, tag: none, at: auto) = place(at, float: true, clearance: 14pt, block(width: 100%, {
+  figmark(num)
   if tag != none [#metadata(none)#label(tag)]
   set par(first-line-indent: 0pt, justify: false)
   align(center, body)
@@ -50,7 +59,10 @@
 }))
 
 // 引用某个 tag 所在的页码。命令行核对页码用：typst eval 'query(<fig1>).first().location().page()' --in 某章.typ
-#let pageof(tag) = context locate(label(tag)).page()
+#let pageof(tag) = context {
+  let loc = locate(label(tag))
+  link(loc, str(loc.page()))
+}
 
 // 带行号的代码清单（原书的代码图）：#fig("28.1", "标题", align(left, numbered("…")))
 // 只翻注释；行号小号灰色，和原书一样放在左边
@@ -133,6 +145,25 @@
   // 「I/O」不许在斜线处断行
   show "I/O": box
 
+  // 链接：图引用、文献引用、页码引用都能点；链接用深蓝色，免得看不出来能点
+  show link: set text(fill: rgb("#1f4e8c"))
+  show regex("图\s?(?:[A-Z]|\d+)\.\d+"): it => {
+    let num = it.text.replace(regex("^图\s?"), "")
+    reflink(<ostep-fig>, num, it)
+  }
+  show regex("\[" + bibkey + "(?:[,，;；]\s?" + bibkey + ")*\]"): it => {
+    let s = it.text
+    let out = ()
+    let last = 0
+    for m in s.matches(regex(bibkey)) {
+      out.push(s.slice(last, m.start))
+      out.push(reflink(<ostep-bib>, m.text, m.text))
+      last = m.end
+    }
+    out.push(s.slice(last))
+    out.join()
+  }
+
   show raw: set text(font: mono, size: 1.25em)
   show raw.where(block: true): it => {
     set par(leading: 10.5pt - 1em, justify: false)
@@ -171,5 +202,26 @@
 #let references(body) = {
   set text(size: 7.5pt, lang: "en", font: "Palatino Linotype")
   set par(first-line-indent: 0pt, leading: 9pt - 1em, spacing: 4pt)
-  body
+  // 每个条目开头的「[KEY]」前放一个锚点，正文里的引用点了跳到这里
+  // 解析后「[D91]」是三段文字：「[」「D91」「]」，也可能连成一段
+  let kids = if body.has("children") { body.children } else { (body,) }
+  let txt(k) = if k.func() == text { k.text } else { none }
+  let start = true
+  for (i, k) in kids.enumerate() {
+    if k.func() == parbreak { start = true; k; continue }
+    if k == [ ] { k; continue }
+    if start {
+      let key = none
+      let t = txt(k)
+      if t == "[" and i + 2 < kids.len() and txt(kids.at(i + 2)) == "]" {
+        key = txt(kids.at(i + 1))
+      } else if t != none {
+        let m = t.match(regex("^\[(" + bibkey + ")\]"))
+        if m != none { key = m.captures.at(0) }
+      }
+      if key != none and key.match(regex("^" + bibkey + "$")) != none [#metadata(key)<ostep-bib>]
+    }
+    start = false
+    k
+  }
 }

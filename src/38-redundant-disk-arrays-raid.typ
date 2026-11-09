@@ -6,6 +6,7 @@
 
 // 不浮动的图：布局表紧跟在引出它的那段文字后面，和原书一致
 #let figin(num, title, body, tag: none) = block(width: 100%, breakable: false, above: 10pt, below: 12pt, {
+  figmark(num)
   if tag != none [#metadata(none)#label(tag)]
   set par(first-line-indent: 0pt, justify: false)
   align(center, body)
@@ -386,7 +387,7 @@ RAID-5 的大部分分析和 RAID-4 相同。例如，两个级别的有效容�
 #references[
 [B+08] “An Analysis of Data Corruption in the Storage Stack” by Lakshmi N. Bairavasundaram, Garth R. Goodson, Bianca Schroeder, Andrea C. Arpaci-Dusseau, Remzi H. Arpaci-Dusseau. FAST ’08, San Jose, CA, February 2008. _Our own work analyzing how often disks actually corrupt your data. Not often, but sometimes! And thus something a reliable storage system must consider._
 
-[BJ88] “Disk Shadowing” by D. Bitton and J. Gray. VLDB 1988. _One of the first papers to discuss mirroring, therein called “shadowing”._
+[BG88] “Disk Shadowing” by D. Bitton and J. Gray. VLDB 1988. _One of the first papers to discuss mirroring, therein called “shadowing”._
 
 [CL95] “Striping in a RAID level 5 disk array” by Peter M. Chen and Edward K. Lee. SIGMETRICS 1995. _A nice analysis of some of the important parameters in a RAID-5 disk array._
 

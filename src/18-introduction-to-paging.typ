@@ -52,6 +52,7 @@
 }
 // 和模板的 fig 一样，只是固定浮动到页顶
 #let figtop(num, title, body, tag: none) = place(top, float: true, clearance: 14pt, block(width: 100%, {
+  figmark(num)
   if tag != none [#metadata(none)#label(tag)]
   set par(first-line-indent: 0pt, justify: false)
   align(center, body)

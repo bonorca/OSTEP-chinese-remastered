@@ -23,6 +23,7 @@
 
 // 不浮动的图：短代码图紧跟在引出它的那段文字后面，和原书一致
 #let figin(num, title, body, tag: none) = block(width: 100%, breakable: false, above: 12pt, below: 12pt, {
+  figmark(num)
   if tag != none [#metadata(none)#label(tag)]
   set par(first-line-indent: 0pt, justify: false)
   align(center, body)

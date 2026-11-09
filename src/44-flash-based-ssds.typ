@@ -455,7 +455,7 @@ FTL 遇到的最后一种情况叫作#strong[全合并]（full merge），需要
 
 [AD14a] “Operating Systems: Three Easy Pieces” by Chapters: _Crash Consistency: FSCK and Journaling_ and _Log-Structured File Systems_. Remzi Arpaci-Dusseau and Andrea Arpaci-Dusseau. _A lot more detail here about how logging can be used in file systems; some of the same ideas can be applied inside devices too as need be._
 
-[AD14a] “Operating Systems: Three Easy Pieces” by Chapters: _Locality and the Fast File System_ and _File System Implementation_. Remzi Arpaci-Dusseau and Andrea Arpaci-Dusseau. _These chapters cover how to build a basic file system for a hard drive. Amazingly, some of these ideas work perfectly well on SSDs! See if you can figure out which design techniques are appropriate, and which are less needed._
+[AD14b] “Operating Systems: Three Easy Pieces” by Chapters: _Locality and the Fast File System_ and _File System Implementation_. Remzi Arpaci-Dusseau and Andrea Arpaci-Dusseau. _These chapters cover how to build a basic file system for a hard drive. Amazingly, some of these ideas work perfectly well on SSDs! See if you can figure out which design techniques are appropriate, and which are less needed._
 
 [A15] “Amazon Pricing Study” by Remzi Arpaci-Dusseau. February, 2015. _This is not an actual paper, but rather one of the authors going to Amazon and looking at current prices of hard drives and SSDs. You too can repeat this study, and see what the costs are today. Do it!_
 
