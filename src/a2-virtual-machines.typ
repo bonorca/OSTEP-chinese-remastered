@@ -62,7 +62,7 @@
 
 要在虚拟机监视器（virtual machine monitor）上运行一台#strong[虚拟机]（virtual machine，例如一个操作系统及其应用程序），用到的基本技术是#strong[受限直接执行]（limited direct execution），我们在讨论操作系统如何虚拟化 CPU 时见过这种技术。因此，当我们想在 VMM 上“启动”一个新的操作系统时，只需跳转到它第一条指令的地址，让它开始运行就行了。就这么简单（好吧，差不多）。
 
-假设我们运行在单处理器上，想在两台虚拟机之间（也就是在两个操作系统及其各自的应用程序之间）分时复用（multiplex）处理器。和操作系统在运行中的进程（process）之间切换（即#strong[上下文切换]，context switch）非常相似，虚拟机监视器（virtual machine monitor）必须在运行中的虚拟机之间执行 #strong[machine switch]。也就是说，执行这种切换时，VMM 必须保存一个操作系统的全部机器状态（machine state），包括寄存器、PC，以及上下文切换（context switch）时不必保存的所有特权硬件状态；再恢复即将运行的虚拟机的机器状态，然后跳转到该虚拟机的 PC，从而完成切换。注意，即将运行的虚拟机的 PC 可能位于操作系统内部，即系统当时正在执行系统调用（system call）；也可能只是位于该操作系统上运行的某个进程中，即一个用户模式（user mode）应用程序。
+假设我们运行在单处理器上，想在两台虚拟机之间（也就是在两个操作系统及其各自的应用程序之间）分时复用（multiplex）处理器。和操作系统在运行中的进程（process）之间切换（即#strong[上下文切换]，context switch）非常相似，虚拟机监视器（virtual machine monitor）必须在运行中的虚拟机之间执行 #strong[machine switch]。也就是说，执行这种切换时，VMM 必须保存一个操作系统的全部机器状态（machine state），包括寄存器、PC，以及上下文切换时不必保存的所有特权硬件状态；再恢复即将运行的虚拟机的机器状态，然后跳转到该虚拟机的 PC，从而完成切换。注意，即将运行的虚拟机的 PC 可能位于操作系统内部，即系统当时正在执行系统调用（system call）；也可能只是位于该操作系统上运行的某个进程中，即一个用户模式（user mode）应用程序。
 
 当运行中的应用程序或操作系统试图执行某种#strong[特权操作]（privileged operation）时，问题就稍微棘手一些了。例如，在采用软件管理 TLB（software-managed TLB）的系统上，操作系统会用专门的特权指令（privileged instruction）把一条转换装入 TLB，然后重新执行那条发生了 TLB 未命中（TLB miss）的指令。在虚拟化环境（virtualized environment）中，不能允许操作系统执行特权指令，否则掌控机器的就是它，而不是它下面的 VMM 了。因此，VMM 必须设法拦截执行特权操作的尝试，从而保住对机器的控制。
 

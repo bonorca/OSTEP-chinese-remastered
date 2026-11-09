@@ -50,11 +50,11 @@
 
 密码学背后的基本思想是：拿一段数据，用一个算法（通常称为#strong[密码算法]，cipher），通常再辅以第二段信息（称为#strong[密钥]，key），把这段数据转换成另一种形式。新的形式应该和旧的形式毫无相似之处；但通常，我们希望能运行另一个算法，同样辅以第二段信息，把数据转换回原来的形式。
 
-我们把这个过程稍微形式化一点。从数据 $P$（通常称为#strong[明文]，plaintext）、密钥（key） $K$ 和加密（encryption）算法 $E()$ 出发，我们最终得到 $C$，也就是 $P$ 被改变后的形式，通常称为#strong[密文]（ciphertext）：
+我们把这个过程稍微形式化一点。从数据 $P$（通常称为#strong[明文]，plaintext）、密钥 $K$ 和加密（encryption）算法 $E()$ 出发，我们最终得到 $C$，也就是 $P$ 被改变后的形式，通常称为#strong[密文]（ciphertext）：
 
 $ C = E(P, K) $
 
-例如，我们可以把明文 “Transfer \$100 to my savings account”（转 100 美元到我的储蓄账户）转换成密文 “Sqzmredq \#099 sn lx rzuhmfr zbbntms”。这个例子其实用的是一种相当差劲的加密算法，叫作凯撒密码（Caesar cipher）。花一两分钟研究一下这段明文（plaintext）和密文，看看你能不能猜出这里用的是什么加密算法。
+例如，我们可以把明文 “Transfer \$100 to my savings account”（转 100 美元到我的储蓄账户）转换成密文 “Sqzmredq \#099 sn lx rzuhmfr zbbntms”。这个例子其实用的是一种相当差劲的加密算法，叫作凯撒密码（Caesar cipher）。花一两分钟研究一下这段明文和密文，看看你能不能猜出这里用的是什么加密算法。
 
 逆向转换以我们刚刚得到的 $C$、解密（decryption）算法 $D()$ 和密钥 $K$ 为输入：
 

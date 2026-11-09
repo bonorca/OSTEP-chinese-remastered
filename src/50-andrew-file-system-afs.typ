@@ -44,7 +44,7 @@
 
 Andrew 文件系统（Andrew File System）是卡内基-梅隆大学（Carnegie-Mellon University，CMU）在 20 世纪 80 年代#footnote[虽然最初叫“Carnegie-Mellon University”，但 CMU 后来去掉了连字符，于是有了现在的写法“Carnegie Mellon University”。由于 AFS 源自 80 年代初的工作，我们沿用 CMU 最初带连字符的写法。如果你对极其无聊的细枝末节感兴趣，可以到 https://www.quora.com/When-did-Carnegie-Mellon-University-remove-the-hyphen-in-the-university-name 看看。]推出的 [H+88]。这个项目由卡内基-梅隆大学著名的 M. Satyanarayanan 教授（简称“Satya”）领导，主要目标很简单：#strong[可扩展性]（scale）。具体来说，怎样设计一个分布式文件系统（distributed file system），才能让一台服务器支持尽可能多的客户端？
 
-有意思的是，设计和实现的很多方面都会影响可扩展性（scalability）。其中最重要的是客户端和服务器之间#strong[协议]（protocol）的设计。例如在 NFS 中，协议迫使客户端定期向服务器核对缓存（cache）的内容是否发生了变化；由于每次核对都要消耗 CPU、网络带宽（bandwidth）等服务器资源，这样频繁的核对会限制一台服务器能够响应的客户端数量，从而限制可扩展性。
+有意思的是，设计和实现的很多方面都会影响可扩展性。其中最重要的是客户端和服务器之间#strong[协议]（protocol）的设计。例如在 NFS 中，协议迫使客户端定期向服务器核对缓存（cache）的内容是否发生了变化；由于每次核对都要消耗 CPU、网络带宽（bandwidth）等服务器资源，这样频繁的核对会限制一台服务器能够响应的客户端数量，从而限制可扩展性。
 
 AFS 和 NFS 的另一个不同之处在于，AFS 从一开始就把用户可以看到的合理行为当作头等大事。在 NFS 中，缓存一致性（cache consistency）很难描述清楚，因为它直接取决于底层的实现细节，包括客户端缓存的超时（timeout）时间。而在 AFS 中，缓存一致性（cache consistency）简单易懂：打开文件时，客户端一般会从服务器拿到最新的一致副本。
 
