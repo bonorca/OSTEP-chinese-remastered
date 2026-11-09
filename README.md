@@ -32,7 +32,7 @@
 
 ## 下载
 
-**整本**：[OSTEP-zh.pdf](pdf/OSTEP-zh.pdf)（页码连续，目录带页码，书签、跨章链接都能点）
+**整本**：[OSTEP-zh-REM.pdf](pdf/OSTEP-zh-REM.pdf)（页码连续，目录带页码，书签、跨章链接都能点）
 
 <details>
 <summary>各章单独的 PDF</summary>
@@ -62,7 +62,7 @@ python tools/build.py                 # 编译全书，输出到 pdf/
 python tools/build.py 28 a4           # 只编译第 28 章和附录 a4
 python tools/build.py --part 2        # 只编译第二部分（0 简介 1 虚拟化 2 并发 3 持久性 4 安全 5 附录）
 python tools/build.py --watch 28      # 改稿时用：保存后自动重新编译
-python tools/build.py --book          # 把全书编成一本：pdf/OSTEP-zh.pdf
+python tools/build.py --book          # 把全书编成一本：pdf/OSTEP-zh-REM.pdf
 python tools/build.py --list          # 列出所有章节
 ```
 

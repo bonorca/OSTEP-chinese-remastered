@@ -1,4 +1,4 @@
-// 整本：python tools/build.py --book（等价于 typst compile --input book=1 src/book.typ pdf/OSTEP-zh.pdf）
+// 整本：python tools/build.py --book（等价于 typst compile --input book=1 src/book.typ pdf/OSTEP-zh-REM.pdf）
 // 各章源文件不用改：模板在 book=1 时切换成连续页码、按章区分标签、生成带页码的目录和书签。
 #import "ostep.typ": *
 #set document(title: "操作系统导论（Operating Systems: Three Easy Pieces）中文版", author: ("Remzi H. Arpaci-Dusseau", "Andrea C. Arpaci-Dusseau"))

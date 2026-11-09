@@ -9,7 +9,7 @@ data = json.load(io.open(os.path.join(ROOT, "chapters.json"), encoding="utf-8"))
 q = lambda p: urllib.parse.quote(p)
 
 out = [START, "", "## 下载", "",
-       "**整本**：[OSTEP-zh.pdf](pdf/OSTEP-zh.pdf)（页码连续，目录带页码，书签、跨章链接都能点）", "",
+       "**整本**：[OSTEP-zh-REM.pdf](pdf/OSTEP-zh-REM.pdf)（页码连续，目录带页码，书签、跨章链接都能点）", "",
        "<details>", "<summary>各章单独的 PDF</summary>", ""]
 for part in data["parts"]:
     links = []
