@@ -135,3 +135,17 @@
 | A8 | [实验：xv6 项目](pdf/5-%E9%99%84%E5%BD%95/a8-xv6-labs-zh.pdf) | 🟩 已校对 |
 
 <!-- progress:end -->
+
+## 自己编译
+
+需要 [Typst](https://typst.app) 0.15 或更新版本和 Python 3。
+
+```
+python tools/build.py                 # 编译全书，输出到 pdf/
+python tools/build.py 28 a4           # 只编译第 28 章和附录 a4
+python tools/build.py --part 2        # 只编译第二部分（0 简介 1 虚拟化 2 并发 3 持久性 4 安全 5 附录）
+python tools/build.py --watch 28      # 改稿时用：保存后自动重新编译
+python tools/build.py --list          # 列出所有章节
+```
+
+排版用到的字体：Palatino Linotype、Noto Serif SC、KaiTi、Arial、Microsoft YaHei、Courier New、Noto Sans SC。缺了会用其他字体代替，脚本会提示。
