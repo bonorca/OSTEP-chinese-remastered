@@ -7,35 +7,30 @@
           "no": "00",
           "file": "00-dedication",
           "title": "献词",
-          "status": "proofread",
           "pdf": "pdf/0-简介/00-dedication-zh.pdf"
         },
         {
           "no": "00",
           "file": "00-preface",
           "title": "前言",
-          "status": "proofread",
           "pdf": "pdf/0-简介/00-preface-zh.pdf"
         },
         {
           "no": "00",
           "file": "00-toc",
           "title": "目录",
-          "status": "proofread",
           "pdf": "pdf/0-简介/00-toc-zh.pdf"
         },
         {
           "no": "01",
           "file": "01-dialogue",
           "title": "关于本书的对话",
-          "status": "proofread",
           "pdf": "pdf/0-简介/01-dialogue-zh.pdf"
         },
         {
           "no": "02",
           "file": "02-introduction",
           "title": "操作系统简介",
-          "status": "proofread",
           "pdf": "pdf/0-简介/02-introduction-zh.pdf"
         }
       ]
@@ -47,154 +42,132 @@
           "no": "03",
           "file": "03-dialogue",
           "title": "关于虚拟化的对话",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/03-dialogue-zh.pdf"
         },
         {
           "no": "04",
           "file": "04-processes",
           "title": "抽象：进程",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/04-processes-zh.pdf"
         },
         {
           "no": "05",
           "file": "05-process-api",
-          "title": "process api",
-          "status": "proofread",
+          "title": "插叙：进程 API",
           "pdf": "pdf/1-虚拟化/05-process-api-zh.pdf"
         },
         {
           "no": "06",
           "file": "06-direct-execution",
-          "title": "direct execution",
-          "status": "proofread",
+          "title": "机制：受限直接执行",
           "pdf": "pdf/1-虚拟化/06-direct-execution-zh.pdf"
         },
         {
           "no": "07",
           "file": "07-cpu-scheduling",
-          "title": "cpu scheduling",
-          "status": "proofread",
+          "title": "调度：简介",
           "pdf": "pdf/1-虚拟化/07-cpu-scheduling-zh.pdf"
         },
         {
           "no": "08",
           "file": "08-multi-level-feedback",
-          "title": "multi level feedback",
-          "status": "proofread",
+          "title": "调度：多级反馈队列",
           "pdf": "pdf/1-虚拟化/08-multi-level-feedback-zh.pdf"
         },
         {
           "no": "09",
           "file": "09-lottery-scheduling",
-          "title": "lottery scheduling",
-          "status": "proofread",
+          "title": "调度：比例份额",
           "pdf": "pdf/1-虚拟化/09-lottery-scheduling-zh.pdf"
         },
         {
           "no": "10",
           "file": "10-multi-cpu-scheduling",
           "title": "多处理器调度（进阶）",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/10-multi-cpu-scheduling-zh.pdf"
         },
         {
           "no": "11",
           "file": "11-summary",
           "title": "关于 CPU 虚拟化的总结对话",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/11-summary-zh.pdf"
         },
         {
           "no": "12",
           "file": "12-dialogue",
           "title": "关于内存虚拟化的对话",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/12-dialogue-zh.pdf"
         },
         {
           "no": "13",
           "file": "13-address-spaces",
           "title": "抽象：地址空间",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/13-address-spaces-zh.pdf"
         },
         {
           "no": "14",
           "file": "14-memory-api",
           "title": "插叙：内存 API",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/14-memory-api-zh.pdf"
         },
         {
           "no": "15",
           "file": "15-address-translation",
           "title": "机制：地址转换",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/15-address-translation-zh.pdf"
         },
         {
           "no": "16",
           "file": "16-segmentation",
           "title": "分段",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/16-segmentation-zh.pdf"
         },
         {
           "no": "17",
           "file": "17-free-space-management",
           "title": "空闲空间管理",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/17-free-space-management-zh.pdf"
         },
         {
           "no": "18",
           "file": "18-introduction-to-paging",
           "title": "分页：简介",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/18-introduction-to-paging-zh.pdf"
         },
         {
           "no": "19",
           "file": "19-translation-lookaside-buffers",
           "title": "分页：更快的转换（TLB）",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/19-translation-lookaside-buffers-zh.pdf"
         },
         {
           "no": "20",
           "file": "20-advanced-page-tables",
           "title": "分页：更小的页表",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/20-advanced-page-tables-zh.pdf"
         },
         {
           "no": "21",
           "file": "21-swapping-mechanisms",
           "title": "超越物理内存：机制",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/21-swapping-mechanisms-zh.pdf"
         },
         {
           "no": "22",
           "file": "22-swapping-policies",
           "title": "超越物理内存：策略",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/22-swapping-policies-zh.pdf"
         },
         {
           "no": "23",
           "file": "23-complete-vm-systems",
           "title": "完整的虚拟内存系统",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/23-complete-vm-systems-zh.pdf"
         },
         {
           "no": "24",
           "file": "24-summary",
           "title": "关于内存虚拟化的总结对话",
-          "status": "proofread",
           "pdf": "pdf/1-虚拟化/24-summary-zh.pdf"
         }
       ]
@@ -206,70 +179,60 @@
           "no": "25",
           "file": "25-dialogue",
           "title": "关于并发的对话",
-          "status": "proofread",
           "pdf": "pdf/2-并发/25-dialogue-zh.pdf"
         },
         {
           "no": "26",
           "file": "26-concurrency-and-threads",
           "title": "并发：简介",
-          "status": "proofread",
           "pdf": "pdf/2-并发/26-concurrency-and-threads-zh.pdf"
         },
         {
           "no": "27",
           "file": "27-thread-api",
           "title": "插叙：线程 API",
-          "status": "proofread",
           "pdf": "pdf/2-并发/27-thread-api-zh.pdf"
         },
         {
           "no": "28",
           "file": "28-locks",
           "title": "锁",
-          "status": "proofread",
           "pdf": "pdf/2-并发/28-locks-zh.pdf"
         },
         {
           "no": "29",
           "file": "29-locked-data-structures",
           "title": "基于锁的并发数据结构",
-          "status": "proofread",
           "pdf": "pdf/2-并发/29-locked-data-structures-zh.pdf"
         },
         {
           "no": "30",
           "file": "30-condition-variables",
           "title": "条件变量",
-          "status": "proofread",
           "pdf": "pdf/2-并发/30-condition-variables-zh.pdf"
         },
         {
           "no": "31",
           "file": "31-semaphores",
           "title": "信号量",
-          "status": "proofread",
           "pdf": "pdf/2-并发/31-semaphores-zh.pdf"
         },
         {
           "no": "32",
           "file": "32-concurrency-bugs",
           "title": "常见并发问题",
-          "status": "proofread",
           "pdf": "pdf/2-并发/32-concurrency-bugs-zh.pdf"
         },
         {
           "no": "33",
           "file": "33-event-based-concurrency",
           "title": "基于事件的并发（进阶）",
-          "status": "proofread",
           "pdf": "pdf/2-并发/33-event-based-concurrency-zh.pdf"
         },
         {
           "no": "34",
           "file": "34-summary",
           "title": "关于并发的总结对话",
-          "status": "proofread",
           "pdf": "pdf/2-并发/34-summary-zh.pdf"
         }
       ]
@@ -281,119 +244,102 @@
           "no": "35",
           "file": "35-dialogue",
           "title": "关于持久性的对话",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/35-dialogue-zh.pdf"
         },
         {
           "no": "36",
           "file": "36-i-o-devices",
           "title": "I/O 设备",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/36-i-o-devices-zh.pdf"
         },
         {
           "no": "37",
           "file": "37-hard-disk-drives",
           "title": "硬盘驱动器",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/37-hard-disk-drives-zh.pdf"
         },
         {
           "no": "38",
           "file": "38-redundant-disk-arrays-raid",
           "title": "廉价磁盘冗余阵列（RAID）",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/38-redundant-disk-arrays-raid-zh.pdf"
         },
         {
           "no": "39",
           "file": "39-files-and-directories",
           "title": "插叙：文件和目录",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/39-files-and-directories-zh.pdf"
         },
         {
           "no": "40",
           "file": "40-file-system-implementation",
           "title": "文件系统实现",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/40-file-system-implementation-zh.pdf"
         },
         {
           "no": "41",
           "file": "41-fast-file-system-ffs",
           "title": "局部性和快速文件系统",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/41-fast-file-system-ffs-zh.pdf"
         },
         {
           "no": "42",
           "file": "42-fsck-and-journaling",
           "title": "崩溃一致性：FSCK 和日志",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/42-fsck-and-journaling-zh.pdf"
         },
         {
           "no": "43",
           "file": "43-log-structured-file-system-lfs",
           "title": "日志结构文件系统",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/43-log-structured-file-system-lfs-zh.pdf"
         },
         {
           "no": "44",
           "file": "44-flash-based-ssds",
           "title": "基于闪存的 SSD",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/44-flash-based-ssds-zh.pdf"
         },
         {
           "no": "45",
           "file": "45-data-integrity-and-protection",
           "title": "数据完整性与保护",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/45-data-integrity-and-protection-zh.pdf"
         },
         {
           "no": "46",
           "file": "46-summary",
           "title": "关于持久性的总结对话",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/46-summary-zh.pdf"
         },
         {
           "no": "47",
           "file": "47-dialogue",
           "title": "关于分布式的对话",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/47-dialogue-zh.pdf"
         },
         {
           "no": "48",
           "file": "48-distributed-systems",
           "title": "分布式系统",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/48-distributed-systems-zh.pdf"
         },
         {
           "no": "49",
           "file": "49-network-file-system-nfs",
           "title": "Sun 的网络文件系统（NFS）",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/49-network-file-system-nfs-zh.pdf"
         },
         {
           "no": "50",
           "file": "50-andrew-file-system-afs",
           "title": "Andrew 文件系统（AFS）",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/50-andrew-file-system-afs-zh.pdf"
         },
         {
           "no": "51",
           "file": "51-summary",
           "title": "关于分布式的总结对话",
-          "status": "proofread",
           "pdf": "pdf/3-持久性/51-summary-zh.pdf"
         }
       ]
@@ -405,42 +351,36 @@
           "no": "52",
           "file": "52-dialogue",
           "title": "关于安全的对话",
-          "status": "proofread",
           "pdf": "pdf/4-安全/52-dialogue-zh.pdf"
         },
         {
           "no": "53",
           "file": "53-intro-security",
           "title": "操作系统安全简介",
-          "status": "proofread",
           "pdf": "pdf/4-安全/53-intro-security-zh.pdf"
         },
         {
           "no": "54",
           "file": "54-authentication",
           "title": "身份认证",
-          "status": "proofread",
           "pdf": "pdf/4-安全/54-authentication-zh.pdf"
         },
         {
           "no": "55",
           "file": "55-access-control",
           "title": "访问控制",
-          "status": "proofread",
           "pdf": "pdf/4-安全/55-access-control-zh.pdf"
         },
         {
           "no": "56",
           "file": "56-cryptography",
           "title": "用密码学保护信息",
-          "status": "proofread",
           "pdf": "pdf/4-安全/56-cryptography-zh.pdf"
         },
         {
           "no": "57",
           "file": "57-distributed",
           "title": "分布式系统安全",
-          "status": "proofread",
           "pdf": "pdf/4-安全/57-distributed-zh.pdf"
         }
       ]
@@ -452,56 +392,48 @@
           "no": "A1",
           "file": "a1-dialogue",
           "title": "关于虚拟机监视器的对话",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a1-dialogue-zh.pdf"
         },
         {
           "no": "A2",
           "file": "a2-virtual-machines",
           "title": "虚拟机监视器",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a2-virtual-machines-zh.pdf"
         },
         {
           "no": "A3",
           "file": "a3-dialogue",
           "title": "关于管程的对话",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a3-dialogue-zh.pdf"
         },
         {
           "no": "A4",
           "file": "a4-monitors",
           "title": "管程（已过时）",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a4-monitors-zh.pdf"
         },
         {
           "no": "A5",
           "file": "a5-dialogue",
           "title": "关于实验的对话",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a5-dialogue-zh.pdf"
         },
         {
           "no": "A6",
           "file": "a6-lab-tutorial",
           "title": "实验：教程",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a6-lab-tutorial-zh.pdf"
         },
         {
           "no": "A7",
           "file": "a7-systems-labs",
           "title": "实验：系统项目",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a7-systems-labs-zh.pdf"
         },
         {
           "no": "A8",
           "file": "a8-xv6-labs",
           "title": "实验：xv6 项目",
-          "status": "proofread",
           "pdf": "pdf/5-附录/a8-xv6-labs-zh.pdf"
         }
       ]
