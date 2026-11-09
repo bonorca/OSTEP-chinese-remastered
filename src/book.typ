@@ -59,14 +59,14 @@
 #include "49-network-file-system-nfs.typ"
 #include "50-andrew-file-system-afs.typ"
 #include "51-summary.typ"
-#part-mark("第四部分", "安全")
+#part-page("第四部分", "安全")
 #include "52-dialogue.typ"
 #include "53-intro-security.typ"
 #include "54-authentication.typ"
 #include "55-access-control.typ"
 #include "56-cryptography.typ"
 #include "57-distributed.typ"
-#part-mark("附录", "")
+#part-page("附录", "")
 #include "a1-dialogue.typ"
 #include "a2-virtual-machines.typ"
 #include "a3-dialogue.typ"

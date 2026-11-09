@@ -65,13 +65,42 @@
   let s = unit-starts()
   s.filter(x => x <= loc.page()).len() == s.filter(x => x <= here().page()).len()
 }
-// 章的锚点：目录、「第 N 章」链接、书签都靠它；整本模式下再放一个看不见的一级标题当书签
+// 整本模式的书签层级：分部（第一部分…、附录）是一级；第 1、2 章原书不属于任何部分，和前言、目录一样是一级，
+// 其余各章挂在分部下面是二级；各章的节再往下一级。
+#let chapter-level(no) = if str(no) in ("1", "2") { 1 } else { 2 }
+// 看不见的结构标题（只用来生成书签），目录生成时靠 supplement 认出来跳过
+#let struct-heading(level, body) = place(hide(heading(level: level, supplement: [ostep-struct], outlined: true, bookmarked: true, body)))
+// 章的锚点：目录、「第 N 章」链接、书签都靠它
 #let chapter-mark(no, title) = {
   unit-start()
-  [#metadata((no: str(no), title: title))<ostep-chapter>]
-  if book-mode { place(hide(heading(level: 1, outlined: true, bookmarked: true)[#str(no) #title])) }
+  [#metadata((no: str(no), title: title, lvl: chapter-level(no)))<ostep-chapter>]
+  if book-mode { struct-heading(chapter-level(no), [#str(no) #title]) }
 }
-#let part-mark(no, title) = [#metadata((no: no, title: title))<ostep-part>]
+#let part-mark(no, title) = {
+  [#metadata((no: no, title: title))<ostep-part>]
+  if book-mode { struct-heading(1, if title == "" { no } else [#no #title]) }
+}
+// 整本模式下，没有自带分部标题页的部分（第四部分、附录）用这个补一张，版式同第 3、25、35 章的分部页，背面空白
+#let part-page(no, title) = {
+  page(width: 432pt, height: 648pt, margin: (x: margin-x, top: body-top, bottom: 648pt - body-bottom),
+    background: context {
+      set text(font: serif, size: body-size, top-edge: "baseline", bottom-edge: "baseline")
+      place(top + left, dx: margin-x, dy: foot-y, box(width: text-width, align(center)[#counter(page).get().first()]))
+    }, {
+      unit-start()
+      part-mark(no, title)
+      set text(font: serif, size: body-size, lang: "zh", region: "cn", top-edge: "baseline", bottom-edge: "baseline")
+      block(height: 100%, width: 100%, {
+        if title == "" {
+          place(top + center, dy: 294pt - body-top, text(size: 17.2pt, weight: "bold", no))
+        } else {
+          place(top + center, dy: 249pt - body-top, text(size: 14.3pt, weight: "bold", no))
+          place(top + center, dy: 294pt - body-top, text(size: 17.2pt, weight: "bold", title))
+        }
+      })
+    })
+  page(width: 432pt, height: 648pt, background: none, foreground: none)[]
+}
 
 // 跳转链接：图的锚点（正文里的「图 X.Y」点了跳过来）、参考文献条目的锚点（「[FLR98]」点了跳过来）
 // 先找本章里的；cross: true 时本章没有就到别的章找（图号全书唯一，文献键各章重复所以不跨章）
@@ -207,8 +236,8 @@
   }
 
   show heading: set text(weight: "regular")
-  // 整本模式下章名占一级标题（书签用），节标题整体降一级
-  let L1 = if book-mode { 2 } else { 1 }
+  // 整本模式下章名占一级或二级标题（书签用），节标题整体往下降
+  let L1 = if book-mode { chapter-level(number) + 1 } else { 1 }
   show heading.where(level: L1): it => block(above: 18pt, below: 10pt, sticky: true,
     move(dx: -21pt, text(size: 10.9pt, it.body)))
   show heading.where(level: L1 + 1): it => block(above: 15pt, below: 8pt, sticky: true,
@@ -242,7 +271,7 @@
       box(width: text-width, align(right, text(font: sans, size: 14.3pt, title))))
   })
 
-  set heading(offset: 1) if book-mode
+  set heading(offset: chapter-level(number)) if book-mode
   body
 }
 

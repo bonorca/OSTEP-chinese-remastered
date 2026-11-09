@@ -530,7 +530,7 @@
 } else {
   // 整本模式：不用上面的静态条目，直接从全书的章锚点、分部锚点和节标题生成，带页码，点了能跳
   // （这样也收进了原书 v1.10 目录没有的第四部分和附录）
-  place(hide(heading(level: 1)[目录]))
+  struct-heading(1, [目录])
   context {
     let plain(c) = if type(c) == str { c } else if c.has("text") { c.text } else if c.has("children") {
       c.children.map(plain).join()
@@ -543,13 +543,18 @@
     }
     // 标题后面接引导点和页码，整行可以点
     let row(loc, body) = link(loc, box(width: 100%)[#body #box(width: 1fr, repeat(h(3pt) + [.] + h(3pt))) #pn(loc)])
-    for m in query(selector(<ostep-chapter>).or(<ostep-part>).or(heading.where(level: 2))) {
+    // 节标题的层级随所在章变化（第 1、2 章和前言是二级，其余各章是三级），按当前章的层级挑，跳过结构标题和小节
+    let cur = 1
+    for m in query(selector(<ostep-chapter>).or(<ostep-part>).or(heading)) {
       let loc = m.location()
       if m.func() == metadata and m.label == <ostep-part> {
-        block(above: 16pt, below: 8pt, sticky: true, text(size: 11pt, weight: "bold")[#m.value.no#h(1em)#m.value.title])
+        block(above: 16pt, below: 8pt, sticky: true, link(loc, text(size: 11pt, weight: "bold")[#m.value.no#h(1em)#m.value.title]))
       } else if m.func() == metadata {
+        cur = m.value.lvl
         block(above: 9pt, below: gap, sticky: true,
           grid(columns: (ind, 1fr), link(loc, strong(m.value.no)), row(loc, strong(m.value.title))))
+      } else if m.supplement == [ostep-struct] or m.level != cur + 1 {
+        // 跳过
       } else {
         let t = plain(m.body).trim()
         let mm = t.match(regex("^([A-Z]?\d*\.\d+)\s+(.+)$"))

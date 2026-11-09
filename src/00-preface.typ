@@ -24,7 +24,7 @@
 )
 #counter(page).update(3)
 #unit-start()
-#if book-mode { place(hide(heading(level: 1)[前言])) }
+#if book-mode { struct-heading(1, [前言]) }
 
 #set text(font: serif, size: body-size, lang: "zh", region: "cn", top-edge: 0.88em, bottom-edge: -0.12em)
 #set par(justify: true, leading: skip - 1em, spacing: skip - 1em, first-line-indent: (amount: 2em, all: true))
