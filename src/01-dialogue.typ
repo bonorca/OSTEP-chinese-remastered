@@ -28,7 +28,7 @@
 
 #S[嗯，我挺喜欢物理的，所以这大概是好事。那是哪三个部分呢？]
 
-#P[就是我们要学的三个核心思想：#strong[虚拟化]（virtualization）、#strong[并发]（concurrency）和#strong[持久性]（persistence）。学这些思想的过程中，我们会把操作系统的工作原理学个遍：它怎样决定接下来在 CPU 上运行哪个程序，在虚拟内存（virtual memory）系统中怎样应对内存过载，虚拟机监视器（virtual machine monitor）怎样工作，怎样管理磁盘上的信息，甚至还会讲一点如何构建一个在部分组件出故障时仍能工作的分布式系统（distributed system）。就是这类东西。]
+#P[就是我们要学的三个核心思想：#strong[虚拟化]（virtualization）、#strong[并发]（concurrency）和#strong[持久性]（persistence）。学这些思想的过程中，我们会把操作系统的工作原理学个遍：它怎样决定接下来在 CPU 上运行哪个程序，在虚拟内存（virtual memory）系统中怎样应对内存过载，虚拟机监视器（virtual machine monitor）怎样工作，怎样管理磁盘上的信息，甚至还会讲一点：部分组件出了故障时，怎样让分布式系统（distributed system）照样工作。就是这类东西。]
 
 #S[说真的，我完全不知道您在说什么。]
 
