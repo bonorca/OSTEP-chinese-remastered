@@ -2,7 +2,7 @@
 
 #show: chapter.with(number: 47, title: "关于分布式的对话", short: "关于分布式的对话", years: "2008–23")
 
-#P[就这样，我们来到了操作系统世界里的最后一小块：分布式系统（distributed system）。这部分我们讲不了太多，所以就在持久性（persistence）这一部分里顺带做个简短介绍，重点放在分布式文件系统（distributed file system）上。希望你不介意！]
+#P[就这样，我们讲到了操作系统世界里的最后一小块：分布式系统（distributed system）。这部分我们讲不了太多，所以就在持久性（persistence）这一部分里顺带做个简短介绍，重点放在分布式文件系统（distributed file system）上。希望你不介意！]
 
 #S[听起来不错。不过，分布式系统究竟是什么呢，噢，无比光荣、无所不知的教授？]
 
