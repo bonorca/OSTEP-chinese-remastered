@@ -111,7 +111,7 @@
   let tgt = if own.len() > 0 { own.first() } else if cross and hits.len() > 0 { hits.first() } else { none }
   if tgt != none { link(tgt.location(), body) } else { body }
 }
-#let bibkey = "[A-Z][A-Za-z+\-]*\d{2}[a-z]?"
+#let bibkey = "[A-Za-z][A-Za-z+\-]*\d{2}[a-z]?"
 
 #let fig(num, title, body, tag: none, at: auto) = place(at, float: true, clearance: 14pt, block(width: 100%, {
   figmark(num)
