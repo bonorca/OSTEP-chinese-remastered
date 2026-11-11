@@ -204,7 +204,7 @@ While (STATUS == BUSY)
 
 许多工程师多年前想出的改进办法，我们已经见过了：#strong[中断]（interrupt）。操作系统不必反复轮询设备，而是可以发出请求，让调用进程进入睡眠（sleep），然后上下文切换（context switch）到另一个任务。设备最终完成操作时，会触发一个硬件中断，使 CPU 跳转到操作系统中一个预先确定的#strong[中断服务程序]（interrupt service routine，ISR），或者更简单地说，#strong[中断处理程序]（interrupt handler）。处理程序就是一段操作系统代码，它会完成这个请求（例如从设备读取数据，也许还有错误码），并唤醒（wake up）等待这次 I/O 的进程，让它按需继续执行。
 
-因此，中断让计算与 I/O 可以#strong[重叠]（overlap），这是提高利用率（utilization）的关键。下面这条时间线说明了这一点：
+因此，中断让计算与 I/O 可以#strong[重叠]（overlap），这是提高利用率（utilization）的关键。下面这条时间线说明了问题所在：
 
 #timeline(("CPU", 0, "11111ppppp11111"), ("磁盘", 5, "11111"))
 
