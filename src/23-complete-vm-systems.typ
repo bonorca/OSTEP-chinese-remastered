@@ -194,7 +194,7 @@ COW 的用处有很多。比如，任何共享库都可以用写时复制（copy
 
 Linux 有个小地方挺有意思：它有两种内核虚拟地址（kernel virtual address）。第一种称为#strong[内核逻辑地址]（kernel logical addresses）[O16]。你可以把它看作内核通常意义上的虚拟地址空间；要获得更多这类内存，内核代码只需调用 #strong[`kmalloc`]。大多数内核数据结构都位于这里，比如页表、每个进程的内核栈（kernel stack）等等。和系统中的大多数其他内存不同，内核逻辑内存#emph[不能]被换出到磁盘。
 
-内核逻辑地址（kernel logical address）最有意思的地方，是它们和物理内存之间的联系。具体来说，内核逻辑地址（kernel logical address）直接映射（direct-mapped）到物理内存的开头部分。因此，内核逻辑地址（kernel logical address）`0xC0000000` 对应物理地址（physical address）`0x00000000`，`0xC0000FFF` 对应 `0x00000FFF`，依此类推。这种直接映射（direct-mapped）意味着两点。第一，内核逻辑地址（kernel logical address）和物理地址之间的相互转换很简单；因此，这些地址常常被直接当作物理地址看待。第二，如果一块内存在内核逻辑地址（kernel logical address）空间中是连续的，那么它在物理内存中也是连续的。因此，从内核地址空间（kernel address space）这一部分分配的内存，适合用于那些需要连续物理内存才能正确工作的操作，比如通过#strong[直接内存访问]（direct memory access，#strong[DMA]）进出设备的 I/O 传输（本书第三部分会讲到这个话题）。
+内核逻辑地址（kernel logical address）最有意思的地方，是它们和物理内存之间的联系。具体来说，内核逻辑地址（kernel logical address）直接映射（direct-mapped）到物理内存的开头部分。因此，内核逻辑地址（kernel logical address）`0xC0000000` 对应物理地址（physical address）`0x00000000`，`0xC0000FFF` 对应 `0x00000FFF`，依此类推。这种直接映射意味着两点。第一，内核逻辑地址（kernel logical address）和物理地址之间的相互转换很简单；因此，这些地址常常被直接当作物理地址看待。第二，如果一块内存在内核逻辑地址（kernel logical address）空间中是连续的，那么它在物理内存中也是连续的。因此，从内核地址空间（kernel address space）这一部分分配的内存，适合用于那些需要连续物理内存才能正确工作的操作，比如通过#strong[直接内存访问]（direct memory access，#strong[DMA]）进出设备的 I/O 传输（本书第三部分会讲到这个话题）。
 
 另一种内核地址是#strong[内核虚拟地址]（kernel virtual address）。要获得这类内存，内核代码要调用另一个分配器（allocator）#strong[`vmalloc`]，它返回一个指针，指向一块所需大小、在虚拟地址上连续的区域。和内核逻辑内存不同，内核虚拟内存（kernel virtual memory）通常不连续：每个内核虚拟页都可能映射到不相邻的物理页（因此不适合用于 DMA）。不过也正因为如此，这类内存更容易分配，常用于大缓冲区（buffer）：在这种场合，要找到一大块连续的物理内存很难。
 
