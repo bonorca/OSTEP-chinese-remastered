@@ -25,7 +25,7 @@
 #let leftlabel(X, y, body) = place(top + left, dx: 0pt, dy: y - 5pt,
   box(width: X - 4pt, height: 10pt, align(right + horizon, text(size: 7.5pt, body))))
 
-在结束对内存虚拟化（memory virtualization）的学习之前，我们来更仔细地看看完整的虚拟内存（virtual memory）系统是怎样搭建起来的。我们已经见过这类系统的关键要素，包括各种页表（page table）设计、与 TLB 的交互（有时甚至由操作系统自己处理），以及决定哪些页（page）留在内存、哪些页踢出内存的策略。然而，一个完整的虚拟内存系统还包含许多其他特性，涉及性能、功能和安全等诸多方面。于是，我们的关键问题是：
+在结束对内存虚拟化（memory virtualization）的学习之前，我们来更仔细地看看完整的虚拟内存（virtual memory）系统是怎样搭建起来的。我们已经见过这类系统的关键要素，包括各种页表（page table）设计、与转换后备缓冲区（translation-lookaside buffer，TLB）的交互（有时甚至由操作系统自己处理），以及决定哪些页（page）留在内存、哪些页踢出内存的策略。然而，一个完整的虚拟内存系统还包含许多其他特性，涉及性能、功能和安全等诸多方面。于是，我们的关键问题是：
 
 #crux[关键问题：如何构建完整的虚拟内存系统][
 实现一个完整的虚拟内存系统需要哪些特性？它们如何提高性能、增强安全性，或以其他方式改进系统？
@@ -45,7 +45,7 @@
 
 == 内存管理硬件
 
-VAX-11 为每个进程（process）提供了一个 32 位的虚拟地址空间（virtual address space），划分成 512 字节的页。因此，虚拟地址（virtual address）由 23 位的 VPN 和 9 位的偏移量（offset）组成。此外，VPN 的高两位用来区分页属于哪个段（segment）；因此，正如我们之前见过的，这个系统是分页（paging）和分段（segmentation）的混合体。
+VAX-11 为每个进程（process）提供了一个 32 位的虚拟地址空间（virtual address space），划分成 512 字节的页。因此，虚拟地址（virtual address）由 23 位的虚拟页号（virtual page number，VPN）和 9 位的偏移量（offset）组成。此外，VPN 的高两位用来区分页属于哪个段（segment）；因此，正如我们之前见过的，这个系统是分页（paging）和分段（segmentation）的混合体。
 
 地址空间（address space）的下半部分称为“进程空间”（process space），每个进程各有一份。进程空间（process space）的前一半称为 P0，里面放着用户程序，还有一个向下增长的堆（heap）；后一半称为 P1，里面是向上增长的栈（stack）。地址空间的上半部分称为系统空间（system space，S），不过只用到了其中的一半。受保护的操作系统代码和数据就放在这里，所有进程也就以这种方式共享了操作系统。
 
@@ -120,9 +120,9 @@ int *p = NULL; // 设置 p = 0
 
 == 页面置换
 
-VAX 中的页表项（PTE）包含以下各位：一个有效位（valid bit）、一个保护字段（4 位）、一个修改位（modified bit，也叫脏位，dirty bit）、一个留给操作系统使用的字段（5 位），最后是物理帧号（PFN），用来记录该页在物理内存中的位置。细心的读者可能已经注意到：没有#strong[访问位]（reference bit）！因此，VMS 的置换算法（replacement algorithm）只能在没有硬件支持的情况下，设法判断哪些页是活跃的。
+VAX 中的页表项（PTE）包含以下各位：一个有效位（valid bit）、一个保护字段（4 位）、一个修改位（modified bit，也叫脏位，dirty bit）、一个留给操作系统使用的字段（5 位），最后是物理帧号（physical frame number，PFN），用来记录该页在物理内存中的位置。细心的读者可能已经注意到：没有#strong[访问位]（reference bit）！因此，VMS 的置换算法（replacement algorithm）只能在没有硬件支持的情况下，设法判断哪些页是活跃的。
 
-开发者还担心#strong[内存大户]（memory hogs），也就是那些占用大量内存、让其他程序难以运行的程序。到目前为止我们看过的大多数策略，都难以防止这种霸占行为；例如，LRU 是一种#emph[全局]策略，它不会在进程之间公平地分配内存。
+开发者还担心#strong[内存大户]（memory hogs），也就是那些占用大量内存、让其他程序难以运行的程序。到目前为止我们看过的大多数策略，都难以防止这种霸占行为；例如，最近最少使用（Least-Recently-Used，LRU）是一种#emph[全局]策略，它不会在进程之间公平地分配内存。
 
 #aside[补充：模拟访问位][
 其实，要想大致知道系统中哪些页正在使用，并不一定需要硬件访问位。早在 20 世纪 80 年代初，Babaoglu 和 Joy 就证明了可以用 VAX 上的保护位（protection bit）来模拟访问位 [BJ81]。基本思路是：如果你想知道系统中哪些页正处于活跃使用状态，就把页表中的所有页都标记为不可访问（但要把进程实际可以访问哪些页的信息保存下来，比如放在页表项的“保留给操作系统的字段”中）。进程访问某一页时，就会陷入操作系统；操作系统随后检查这一页是否确实允许访问，如果是，就把它恢复成正常的保护状态（例如只读或读写）。到了置换的时候，操作系统可以检查哪些页仍然被标记为不可访问，从而知道哪些页最近没被用过。
@@ -130,7 +130,7 @@ VAX 中的页表项（PTE）包含以下各位：一个有效位（valid bit）�
 这种“模拟”访问位的关键，是在降低开销的同时，仍能较好地掌握页的使用情况。操作系统不能太积极地把页标记为不可访问，否则开销会太高；也不能太消极，否则所有页最后都会显示为已访问，操作系统又无从判断该淘汰（evict）哪一页了。
 ]
 
-为了解决这两个问题，开发者提出了#strong[segmented FIFO] 置换策略（replacement policy）[RL81]。思路很简单：每个进程能保留在内存中的页数有一个上限，称为它的#strong[驻留集大小]（resident set size，#strong[RSS]）。这些页都放在一个 FIFO 链表（linked list）里；当进程超出它的 RSS 时，就淘汰“最先进入”的那一页。FIFO 显然不需要任何硬件支持，因此很容易实现。
+为了解决这两个问题，开发者提出了#strong[segmented FIFO] 置换策略（replacement policy）[RL81]。思路很简单：每个进程能保留在内存中的页数有一个上限，称为它的#strong[驻留集大小]（resident set size，#strong[RSS]）。这些页都放在一个先进先出（First In, First Out，FIFO）链表（linked list）里；当进程超出它的 RSS 时，就淘汰“最先进入”的那一页。FIFO 显然不需要任何硬件支持，因此很容易实现。
 
 当然，正如我们前面看到的，纯 FIFO 的表现并不算好。为了改进 FIFO 的性能，VMS 引入了两个#strong[二次机会链表]（second-chance lists）：一个全局的#emph[干净页空闲链表]（clean-page free list）和一个#emph[脏页链表]（dirty-page list），页在被淘汰出内存之前，会先放到这两个链表里。当进程 P 超出它的 RSS 时，就从该进程自己的 FIFO 中移出一页；如果这一页是干净的（没被修改过），就放到干净页链表（clean-page free list）的末尾；如果是脏的（被修改过），就放到脏页链表（dirty-page list）的末尾。
 
@@ -202,7 +202,7 @@ Linux 有个小地方挺有意思：它有两种内核虚拟地址（kernel virt
 
 == 页表结构
 
-我们关注的是 x86 上的 Linux，所以下面围绕 x86 提供的页表结构来讨论，它决定了 Linux 能做什么、不能做什么。如前所述，x86 提供了一种由硬件管理的多级页表（multi-level page table）结构，每个进程一张页表；操作系统只需在自己的内存中建立映射，把一个特权寄存器指向页目录（page directory）的起始位置，剩下的事情就交给硬件处理。不出所料，操作系统会在创建进程、删除进程以及上下文切换时介入，确保每种情况下硬件 MMU 用来转换的都是正确的页表。
+我们关注的是 x86 上的 Linux，所以下面围绕 x86 提供的页表结构来讨论，它决定了 Linux 能做什么、不能做什么。如前所述，x86 提供了一种由硬件管理的多级页表（multi-level page table）结构，每个进程一张页表；操作系统只需在自己的内存中建立映射，把一个特权寄存器指向页目录（page directory）的起始位置，剩下的事情就交给硬件处理。不出所料，操作系统会在创建进程、删除进程以及上下文切换时介入，确保每种情况下硬件内存管理单元（memory management unit，MMU）用来转换的都是正确的页表。
 
 近年来最大的变化，可能就是前面简单提到的从 32 位 x86 转向 64 位 x86。正如在 VAX/VMS 系统中看到的，32 位地址空间已经存在了很长时间，随着技术的发展，它终于开始真正成为程序的限制。虚拟内存让系统编程（systems programming）变得容易，但现代系统动辄有好几 GB 内存，32 位已经不够用来引用其中的每一个字节了。因此，下一次飞跃就成了必然。
 
@@ -343,7 +343,7 @@ prompt> ./random
 0x7ffe45522e94
 ```
 
-ASLR 对用户级程序是一种非常有用的防御，所以它也被引入了内核，这个特性的名字毫无新意，就叫#strong[内核地址空间布局随机化]（kernel address space layout randomization，#strong[KASLR]）。不过事实表明，内核可能还有更大的问题要应对，下面就来讨论。
+ASLR 对用户级程序是一种非常有用的防御，所以它也被引入了内核，这个特性的名字毫无新意，就叫#strong[内核地址空间布局随机化]（kernel address space layout randomization，#strong[KASLR]）。不过，内核可能还有更大的问题要应对，下面就来讨论。
 
 == 其他安全问题：Meltdown 和 Spectre
 

@@ -125,7 +125,7 @@ int main(void) {
 
 为了突破这个限制，许多现代操作系统引入了向磁盘系统发出 I/O 请求的新方法，统称为#strong[异步 I/O]（asynchronous I/O）。这些接口让应用程序可以发出 I/O 请求，并在 I/O 完成之前立即把控制权返回给调用者；另外还有一些接口，让应用程序能够确定各个 I/O 是否已经完成。
 
-例如，我们来看看 Mac 上提供的接口（其他系统也有类似的 API）。这些 API 围绕一个基本结构展开，即 `struct aiocb`，通常称为 #strong[AIO 控制块]（AIO control block）。这个结构的简化版本如下，更多信息请参阅手册页：
+例如，我们来看看 Mac 上提供的接口（其他系统也有类似的 API）。这些 API 围绕一个基本结构展开，即 `struct aiocb`，通常称为 #strong[AIO 控制块]（AIO control block，AIO 即异步 I/O）。这个结构的简化版本如下，更多信息请参阅手册页：
 
 ```
 struct aiocb {

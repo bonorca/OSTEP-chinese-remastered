@@ -115,7 +115,7 @@ for (i = 0; i < 10; i++) {
 你可能会想：既然 TLB 这类缓存这么好，为什么不干脆把缓存做得更大，把所有数据都放进去呢？遗憾的是，这就会碰上物理定律这类更根本的限制。缓存要快，就必须小，因为光速之类的物理限制会起作用。大缓存注定是慢的，这就失去了缓存的意义。因此，我们只能用小而快的缓存；剩下的问题是，如何最好地利用它们来提升性能。
 ]
 
-关于 TLB 的性能还有最后一点：如果程序在这个循环结束后不久再次访问这个数组，而 TLB 又足够大、能缓存所需的转换，我们很可能会看到更好的结果：命中、命中、命中、命中、命中、命中、命中、命中、命中、命中。在这种情况下，TLB 命中率（TLB hit rate）之所以高，是因为#strong[时间局部性]（temporal locality），也就是内存项在#strong[时间]上很快被再次引用。和任何缓存一样，TLB 的成功依赖于空间局部性和时间局部性，而这两者都是程序的性质。如果所关心的程序具有这样的局部性，TLB 命中率（TLB hit rate）就很可能很高；很多程序都是如此。
+关于 TLB 的性能还有最后一点：如果程序在这个循环结束后不久再次访问这个数组，而 TLB 又足够大、能缓存所需的转换，我们很可能会看到更好的结果：命中、命中、命中、命中、命中、命中、命中、命中、命中、命中。在这种情况下，TLB 命中率之所以高，是因为#strong[时间局部性]（temporal locality），也就是内存项在#strong[时间]上很快被再次引用。和任何缓存一样，TLB 的成功依赖于空间局部性和时间局部性，而这两者都是程序的性质。如果所关心的程序具有这样的局部性，TLB 命中率就很可能很高；很多程序都是如此。
 
 #fig("19.3", "TLB 控制流算法（由操作系统处理）", tag: "fig3", align(left, numbered(
 "VPN = (VirtualAddress & VPN_MASK) >> SHIFT
@@ -136,7 +136,7 @@ else                    // TLB 未命中
 
 更现代的架构（例如 MIPS R10k [H93] 或 Sun 的 SPARC v9 [WG00]，它们都是 #strong[RISC]，即精简指令集计算机，reduced-instruction set computer）采用所谓的#strong[软件管理的 TLB]（software-managed TLB）。发生 TLB 未命中时，硬件只是触发一个异常（图 19.3 的第 11 行），暂停当前的指令流，把特权级提升到内核模式（kernel mode），然后跳转到#strong[陷阱处理程序]（trap handler）。你可能已经猜到，这个陷阱处理程序（trap handler）就是操作系统中专门为处理 TLB 未命中而编写的代码。这段代码运行时，会在页表中查找转换，用特殊的“特权”指令更新 TLB，然后从陷阱返回（return-from-trap）；此时，硬件会重新执行这条指令，这一次 TLB 就会命中。
 
-我们来讨论几个重要的细节。第一，这里的从陷阱返回（return-from-trap）指令，要和之前处理系统调用（system call）时看到的从陷阱返回指令稍有不同。在系统调用的情况下，从陷阱返回（return-from-trap）应该从陷入操作系统那条指令的#emph[下一条]指令处继续执行，就像从过程调用（procedure call）返回时，会回到紧跟在调用指令之后的那条指令一样。而在 TLB 未命中的情况下，从未命中处理的陷阱（trap）返回时，硬件必须从#emph[引发]陷阱的那条指令处继续执行；这样重试（retry）一次，指令就会再运行一遍，这一次 TLB 就会命中。因此，根据陷阱（trap）或异常的引发方式，硬件在陷入操作系统时必须保存不同的 PC，这样到了该恢复的时候才能正确地继续执行。
+我们来讨论几个重要的细节。第一，这里的从陷阱返回（return-from-trap）指令，要和之前处理系统调用（system call）时看到的从陷阱返回指令稍有不同。在系统调用的情况下，从陷阱返回（return-from-trap）应该从陷入操作系统那条指令的#emph[下一条]指令处继续执行，就像从过程调用（procedure call）返回时，会回到紧跟在调用指令之后的那条指令一样。而在 TLB 未命中的情况下，从未命中处理的陷阱（trap）返回时，硬件必须从#emph[引发]陷阱的那条指令处继续执行；这样重试（retry）一次，指令就会再运行一遍，这一次 TLB 就会命中。因此，根据陷阱（trap）或异常的引发方式，硬件在陷入操作系统时必须保存不同的程序计数器（program counter，PC），这样到了该恢复的时候才能正确地继续执行。
 
 #aside[补充：RISC 与 CISC][
 20 世纪 80 年代，计算机体系结构界发生了一场大论战。一方是 #strong[CISC] 阵营，CISC 是#strong[复杂指令集计算]（Complex Instruction Set Computing）的缩写；另一方是 #strong[RISC]，即#strong[精简指令集计算]（Reduced Instruction Set Computing）[PS81]。RISC 一方的领军人物是伯克利的 David Patterson 和斯坦福的 John Hennessy（两人也合写过几本著名的书 [HP06]），不过，后来因 RISC 方面的开创性工作而获得图灵奖（Turing Award）的是 John Cocke [CM00]。
@@ -243,7 +243,7 @@ MIPS TLB 中还有其他几个有意思的位。其中有一个#emph[全局]位�
 })
 
 #tip[提示：RAM 不总是 RAM（Culler 定律）][
-#strong[随机存取存储器]（random-access memory，#strong[RAM]）这个名字意味着，访问 RAM 的任何部分都一样快。一般来说，这样看待 RAM 没什么问题；但由于 TLB 这类硬件和操作系统特性，访问内存中的某个页可能代价高昂，特别是当这个页当前没有被 TLB 映射时。因此，最好时刻记住这条实现上的提示：#strong[RAM 不总是 RAM]。有时随机访问（random access）地址空间，尤其是访问的页数超过了 TLB 的覆盖范围时，可能会造成严重的性能损失。由于我们的一位导师 David Culler 以前总说 TLB 是许多性能问题的根源，我们以他的名字命名这条定律：#strong[Culler 定律]（#text(font: "Palatino Linotype")[Culler’s Law]）。
+#strong[随机存取存储器]（random-access memory，#strong[RAM]）这个名字意味着，访问 RAM 的任何部分都一样快。一般来说，这样看待 RAM 没什么问题；但由于 TLB 这类硬件和操作系统特性，访问内存中的某个页可能代价高昂，特别是当这个页当前没有被 TLB 映射时。因此，最好时刻记住这条实现上的提示：#strong[RAM 不总是 RAM]。有时随机访问（random access）地址空间，尤其是访问的页数超过了 TLB 覆盖范围（TLB coverage）时，可能会造成严重的性能损失。由于我们的一位导师 David Culler 以前总说 TLB 是许多性能问题的根源，我们以他的名字命名这条定律：#strong[Culler 定律]（#text(font: "Palatino Linotype")[Culler’s Law]）。
 ]
 
 MIPS 的 TLB 通常有 32 或 64 个这样的项，其中大多数由运行中的用户进程使用。不过，也有少数几项是留给操作系统的。操作系统可以设置一个 #emph[wired] 寄存器，告诉硬件要为操作系统保留多少个 TLB 槽位。这些保留的映射用于操作系统在关键时刻要访问的代码和数据；在这种时刻发生 TLB 未命中会很麻烦（例如在 TLB 未命中处理程序中）。

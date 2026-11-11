@@ -111,7 +111,7 @@ I/O 应该怎样集成到系统中？有哪些通用机制？怎样让它们高�
 
 当然，现代系统越来越多地使用专门的芯片组和更快的点对点互连来提高性能。图 36.2（第 #pageof("fig2") 页）大致画出了 Intel Z270 芯片组的结构 [H17]。在最上面，CPU 与内存系统连接得最紧密，但它与显卡（从而也与显示器）之间也有一条高性能的连接，以支持游戏（噢，太可怕了！）和其他图形密集型应用。
 
-CPU 通过 Intel 专有的 #strong[DMI]（#strong[Direct Media Interface]，直接媒体接口）连到一个 I/O 芯片上，其余设备则通过多种不同的互连线连到这个芯片上。在右边，一块或多块硬盘通过 #strong[eSATA] 接口连到系统上。#strong[ATA]（#strong[AT Attachment]，指为 IBM PC AT 提供连接）、后来的 #strong[SATA]（#strong[Serial ATA]，串行 ATA），以及现在的 eSATA（#strong[external SATA]，外部 SATA），代表了几十年来存储接口的演进，每前进一步都提高了性能，以跟上现代存储设备（storage device）的步伐。
+CPU 通过 Intel 专有的 #strong[DMI]（#strong[Direct Media Interface]，直接媒体接口）连到一个 I/O 芯片上，其余设备则通过多种不同的互连线连到这个芯片上。在右边，一块或多块硬盘（hard disk drive）通过 #strong[eSATA] 接口连到系统上。#strong[ATA]（#strong[AT Attachment]，指为 IBM PC AT 提供连接）、后来的 #strong[SATA]（#strong[Serial ATA]，串行 ATA），以及现在的 eSATA（#strong[external SATA]，外部 SATA），代表了几十年来存储接口的演进，每前进一步都提高了性能，以跟上现代存储设备（storage device）的步伐。
 
 I/O 芯片下方是若干 #strong[USB]（#strong[Universal Serial Bus]，通用串行总线）连接，在这张图里，它们让键盘和鼠标可以接到计算机上。在许多现代系统中，USB 就用于这类低性能设备。
 
@@ -158,7 +158,7 @@ I/O 芯片下方是若干 #strong[USB]（#strong[Universal Serial Bus]，通用�
 
 现在我们来看一个典型的设备（不是真实的设备），借助它来理解：要让设备交互变得高效，需要哪些机制。从图 36.3（第 #pageof("fig3") 页）可以看到，一个设备有两个重要的组成部分。第一部分是它向系统其余部分呈现的硬件#strong[接口]（interface）。和软件一样，硬件也必须提供某种接口，让系统软件能控制它的操作。因此，所有设备都有规定好的接口，以及典型交互所遵循的协议（protocol）。
 
-任何设备的第二部分是它的#strong[内部结构]（internal structure）。这一部分因设备而异，负责实现设备向系统呈现的抽象（abstraction）。非常简单的设备只用一块或几块硬件芯片来实现自身功能；更复杂的设备则会包含一个简单的 CPU、一些通用内存，以及其他设备专用的芯片来完成工作。例如，现代 RAID 控制器的功能，可能要靠几十万行#strong[固件]（firmware，即硬件设备内部的软件）来实现。
+任何设备的第二部分是它的#strong[内部结构]（internal structure）。这一部分因设备而异，负责实现设备向系统呈现的抽象（abstraction）。非常简单的设备只用一块或几块硬件芯片来实现自身功能；更复杂的设备则会包含一个简单的 CPU、一些通用内存，以及其他设备专用的芯片来完成工作。例如，现代 RAID（廉价磁盘冗余阵列）控制器的功能，可能要靠几十万行#strong[固件]（firmware，即硬件设备内部的软件）来实现。
 
 #fig("36.3", "典型设备", tag: "fig3", at: top, box(width: 270pt, height: 72pt, {
   set text(font: sans, size: 7.5pt)
@@ -202,7 +202,7 @@ While (STATUS == BUSY)
 
 = 36.4 用中断降低 CPU 开销
 
-许多工程师多年前想出的改进办法，我们已经见过了：#strong[中断]（interrupt）。操作系统不必反复轮询设备，而是可以发出请求，让调用进程进入睡眠，然后上下文切换（context switch）到另一个任务。设备最终完成操作时，会触发一个硬件中断，使 CPU 跳转到操作系统中一个预先确定的#strong[中断服务程序]（interrupt service routine，ISR），或者更简单地说，#strong[中断处理程序]（interrupt handler）。处理程序就是一段操作系统代码，它会完成这个请求（例如从设备读取数据，也许还有错误码），并唤醒等待这次 I/O 的进程，让它按需继续执行。
+许多工程师多年前想出的改进办法，我们已经见过了：#strong[中断]（interrupt）。操作系统不必反复轮询设备，而是可以发出请求，让调用进程进入睡眠（sleep），然后上下文切换（context switch）到另一个任务。设备最终完成操作时，会触发一个硬件中断，使 CPU 跳转到操作系统中一个预先确定的#strong[中断服务程序]（interrupt service routine，ISR），或者更简单地说，#strong[中断处理程序]（interrupt handler）。处理程序就是一段操作系统代码，它会完成这个请求（例如从设备读取数据，也许还有错误码），并唤醒（wake up）等待这次 I/O 的进程，让它按需继续执行。
 
 因此，中断让计算与 I/O 可以#strong[重叠]（overlap），这是提高利用率（utilization）的关键。下面这条时间线说明了这一点：
 
@@ -224,7 +224,7 @@ While (STATUS == BUSY)
 
 不使用中断的另一个原因出现在网络中 [MR96]。如果大量传入的数据包（packet）每个都产生一个中断，操作系统就可能陷入#strong[活锁]（livelock），也就是发现自己只顾着处理中断，从不让用户级进程运行、真正去处理请求。例如，设想一台 Web 服务器因为登上了 Hacker News 榜首 [H18] 而遭遇负载激增。在这种情况下，最好偶尔用一下轮询，更好地控制系统中发生的事情，让 Web 服务器先处理一些请求，再回到设备那里查看有没有更多数据包到达。
 
-另一种基于中断的优化是#strong[合并]（coalescing）。采用这种做法时，需要触发中断的设备会先等一小会儿，再把中断发给 CPU。等待期间，其他请求可能很快也完成了，于是多个中断就可以合并成一次中断，从而降低中断处理的开销。当然，等得太久会增加请求的延迟，这是系统中常见的权衡。Ahmad 等人的论文 [A+11] 对此做了很好的总结。
+另一种基于中断的优化是#strong[合并]（coalescing）。采用这种做法时，需要触发中断的设备会先等一小会儿，再把中断发给 CPU。等待期间，其他请求可能很快也完成了，于是多个中断就可以合并成一次中断，从而降低中断处理的开销。当然，等得太久会增加请求的延迟（latency），这是系统中常见的权衡（trade-off）。Ahmad 等人的论文 [A+11] 对此做了很好的总结。
 
 = 36.5 用 DMA 更高效地搬运数据
 

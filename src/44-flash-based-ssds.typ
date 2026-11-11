@@ -95,7 +95,7 @@
 
 正如古希腊人所说，存一个位（或几个位），成不了存储系统。因此，闪存芯片（flash chip）由一个个 #strong[bank]（或者叫#strong[平面]，plane）组成，每个 bank 又包含大量单元。
 
-访问一个 bank 时，有两种不同大小的单位：一种是#strong[块]（block，有时也叫#strong[擦除块]，erase block），大小通常是 128 KB 或 256 KB；另一种是#strong[页]（page），大小为几 KB（例如 4 KB）。每个 bank 中有大量的块，每个块中又有大量的页。考虑闪存时，你必须记住这套新术语，它和我们在磁盘、RAID 中说的块，以及在虚拟内存（virtual memory）中说的页都不一样。
+访问一个 bank 时，有两种不同大小的单位：一种是#strong[块]（block，有时也叫#strong[擦除块]，erase block），大小通常是 128 KB 或 256 KB；另一种是#strong[页]（page），大小为几 KB（例如 4 KB）。每个 bank 中有大量的块，每个块中又有大量的页。考虑闪存时，你必须记住这套新术语，它和我们在磁盘和廉价磁盘冗余阵列（Redundant Array of Inexpensive Disks，RAID）中说的块，以及在虚拟内存（virtual memory）中说的页都不一样。
 
 图 44.1 展示了一个包含块和页的闪存平面（flash plane）示例；在这个简单的例子中，有三个块，每个块包含四页。下面我们会看到为什么要区分块和页；其实，这一区别对读写之类的闪存操作至关重要，对设备的整体性能更是如此。你将学到的最重要（也最奇怪）的一点是：要写入块中的某一页，必须先擦除整个块。正是这个棘手的细节，让构建基于闪存的 SSD 成为一项有趣且值得做的挑战，这也是本章后半部分的主题。
 
@@ -316,7 +316,7 @@ trim 操作接收一个地址（可能还有一个长度），只是告诉设备
 
 == 基于块的映射
 
-降低映射开销的一种方法，是对设备的每个#emph[块]（block）只保存一个指针，而不是每页一个，这样映射信息的量就缩小为原来的 $1 slash (italic("Size")_italic("block") / italic("Size")_italic("page"))$。这种#strong[块级]（block-level）FTL 类似于在虚拟内存系统中使用更大的页：那样的话，VPN 用的位数更少，每个虚拟地址（virtual address）中的偏移量（offset）更大。
+降低映射开销的一种方法，是对设备的每个#emph[块]（block）只保存一个指针，而不是每页一个，这样映射信息的量就缩小为原来的 $1 slash (italic("Size")_italic("block") / italic("Size")_italic("page"))$。这种#strong[块级]（block-level）FTL 类似于在虚拟内存系统中使用更大的页：那样的话，虚拟页号（virtual page number，VPN）用的位数更少，每个虚拟地址（virtual address）中的偏移量（offset）更大。
 
 可惜的是，在基于日志的 FTL 中，基于块的映射性能并不好。最大的问题出现在“小写入”时（即写入量小于一个物理块的大小）。这种情况下，FTL 必须从旧块中读出大量有效数据，把它们（连同这次小写入的数据）复制到一个新块中。这种数据复制会大大增加写放大（write amplification），从而降低性能。
 

@@ -20,7 +20,7 @@
 
 // ---- 正文 ----
 
-除了前面介绍过的文件系统（file system）中的那些基本进展，还有不少特性值得研究。本章再次讨论可靠性（reliability），存储系统的这个话题此前在 RAID 一章已经谈过。具体来说，鉴于现代存储设备（storage device）并不可靠，文件系统或存储系统应该如何确保数据安全？
+除了前面介绍过的文件系统（file system）中的那些基本进展，还有不少特性值得研究。本章再次讨论可靠性（reliability），存储系统的这个话题此前在廉价磁盘冗余阵列（Redundant Array of Inexpensive Disks，RAID）一章已经谈过。具体来说，鉴于现代存储设备（storage device）并不可靠，文件系统或存储系统应该如何确保数据安全？
 
 这个领域统称为#strong[数据完整性]（data integrity）或#strong[数据保护]（data protection）。下面就来研究一些技术，确保你存进存储系统的数据，取回来时还是原来的样子。
 
