@@ -545,7 +545,7 @@ prompt> rm -rf *
 
 既然已经创建了目录，我们可能也想读取目录。其实，`ls` 程序做的正是这件事。我们来写一个类似 `ls` 的小工具，看看它是怎么做到的。
 
-我们不是像打开文件那样直接打开目录，而是使用一组新的调用。下面的示例程序打印一个目录的内容。这个程序用了三个调用：`opendir()`、`readdir()` 和 `closedir()`，你可以看到这个接口有多简单；我们只用一个简单的循环，每次读取一个目录条目（directory entry），打印出目录中每个文件的名字和 inode 号。
+我们不是像打开文件那样直接打开目录，而是使用一组新的调用。下面的示例程序打印一个目录的内容。这个程序用了三个调用：`opendir()`、`readdir()` 和 `closedir()`，你可以看到这个接口有多简单；我们只用一个简单的循环，每次读取一个目录项（directory entry），打印出目录中每个文件的名字和 inode 号。
 
 ```
 int main(int argc, char *argv[]) {
@@ -561,7 +561,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-从下面的声明可以看到，#box[`struct dirent`] 中的每个目录条目（directory entry）都包含哪些信息：
+从下面的声明可以看到，#box[`struct dirent`] 中的每个目录项（directory entry）都包含哪些信息：
 
 ```
 struct dirent {

@@ -153,7 +153,7 @@
   at(c - 44pt, c - 44pt, circle(radius: 44pt, stroke: 0.6pt))
   at(c - 21pt, c - 21pt, circle(radius: 21pt, stroke: 0.6pt))
   at(c - 2.5pt, c - 1pt, circle(radius: 2.5pt, fill: black))
-  ctext(c, c - 8pt, [转轴])
+  ctext(c, c - 8pt, [主轴])
   for (k, n) in order.enumerate() {
     let a = k * 30deg
     ctext(c + 33pt * calc.cos(a), c + 33pt * calc.sin(a), str(n), w: 14pt)

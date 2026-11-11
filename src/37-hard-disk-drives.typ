@@ -66,7 +66,7 @@
   }
   // 转轴
   at(cx - 2.5pt, cy - 2.5pt, circle(radius: 2.5pt, fill: black))
-  ctext(cx, cy - 8pt, [转轴])
+  ctext(cx, cy - 8pt, [主轴])
   if over != none { over(cx, cy) }
 })
 
