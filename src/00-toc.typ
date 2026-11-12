@@ -187,7 +187,7 @@
   (kind: "misc", title: "作业（模拟）"),
   (kind: "ch", no: "16", title: "分段"),
   (kind: "sec", no: "16.1", title: "分段：泛化的基址/界限"),
-  (kind: "sec", no: "16.2", title: "引用的是哪个段？"),
+  (kind: "sec", no: "16.2", title: "地址属于哪个段？"),
   (kind: "sec", no: "16.3", title: "栈怎么办？"),
   (kind: "sec", no: "16.4", title: "支持共享"),
   (kind: "sec", no: "16.5", title: "细粒度与粗粒度的分段"),

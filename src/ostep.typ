@@ -210,23 +210,11 @@
   // 「I/O」不许在斜线处断行
   show "I/O": box
 
-  // 链接：图引用、文献引用、页码引用都能点；链接用深蓝色，免得看不出来能点
+  // 链接：图引用、页码引用能点（文献引用按用户要求不做链接）；链接用深蓝色，免得看不出来能点
   show link: set text(fill: rgb("#1f4e8c"))
   show regex("图\s?(?:[A-Z]|\d+)\.\d+"): it => {
     let num = it.text.replace(regex("^图\s?"), "")
     reflink(<ostep-fig>, num, it, cross: true)
-  }
-  show regex("\[" + bibkey + "(?:[,，;；]\s?" + bibkey + ")*\]"): it => {
-    let s = it.text
-    let out = ()
-    let last = 0
-    for m in s.matches(regex(bibkey)) {
-      out.push(s.slice(last, m.start))
-      out.push(reflink(<ostep-bib>, m.text, m.text))
-      last = m.end
-    }
-    out.push(s.slice(last))
-    out.join()
   }
 
   show raw: set text(font: mono, size: 1.25em)
